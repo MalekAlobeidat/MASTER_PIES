@@ -38,6 +38,12 @@ class AdminDashboardController extends Controller
                 ->join('subscriptions', 'subscription_histories.subscription_id', '=', 'subscriptions.id')
                 ->select(DB::raw('SUM(subscriptions.cost) AS total_revenue'))
                 ->first()->total_revenue,
+
+                'TotalArtisans' =>  DB::table('artisans')->count(),
+
+                'TotalCities' => DB::table('cities')->count(),
+
+
     
                 // Add other statistics in a similar manner
             ];
@@ -49,53 +55,10 @@ class AdminDashboardController extends Controller
     
     }
 
-    private function getTotalArtisans()
-    {
-        try {
-            return DB::table('artisans')->count();
-        } catch (\Exception $e) {
-            throw $e;
-        }
-    }
-
-    private function getTotalCities()
-    {
-        try {
-            return DB::table('cities')->count();
-        } catch (\Exception $e) {
-            throw $e;
-        }
-    }
-
-    private function getTotalCertifications()
-    {
-        try {
-            return DB::table('certifications')->count();
-        } catch (\Exception $e) {
-            throw $e;
-        }
-    }
-
     private function getTotalReports()
     {
         try {
             return DB::table('reports')->count();
-        } catch (\Exception $e) {
-            throw $e;
-        }
-    }
-
-
-    
-
-    private function getArtisansPerCity()
-    {
-        try {
-            return DB::table('cities')
-                ->select('cities.name', DB::raw('COUNT(artisan_cities.artisan_id) AS artisan_count'))
-                ->leftJoin('artisan_cities', 'cities.id', '=', 'artisan_cities.city_id')
-                ->groupBy('cities.id')
-                ->get();
         } catch (\Exception $e) {
             throw $e;
         }
@@ -187,8 +150,9 @@ public function artisan_city($arisan_id,$city_id){
 }
 public function filterAndsearch(Request $request)
 {
+    // dd($request);
     try {
-        $query = User::with('artisan')
+        $query = User::with(['artisan.specialty'])
             ->where('role_id', '=', 2);
 
         // Search by name or email

@@ -54,7 +54,44 @@ function displayArtisansData(artisansData) {
 
 function afterSearch(artisansData) {
     // This function can remain unchanged based on the modifications in displayArtisansData
-    displayArtisansData(artisansData);
+    console.log(artisansData)
+    var tableBody = document.querySelector('#artisansTable tbody');
+
+    // Clear existing rows in the table body
+    tableBody.innerHTML = '';
+
+    for (let i = 0; i < artisansData.length; i++) {
+        var row = document.createElement('tr');
+    
+        // Create and append cells for each column
+        var nameCell = document.createElement('td');
+        nameCell.textContent = artisansData[i].name;
+        row.appendChild(nameCell);
+    
+        var emailCell = document.createElement('td');
+        emailCell.textContent =  artisansData[i].email;
+        row.appendChild(emailCell);
+    
+        var specialtyCell = document.createElement('td');
+        specialtyCell.textContent =  artisansData[i].artisan.specialty.name;
+        row.appendChild(specialtyCell);
+    
+        // Create a cell for the delete button
+        var deleteCell = document.createElement('td');
+        var deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Delete';
+        deleteButton.addEventListener('click', function () {
+            // Call a function to handle the delete action
+            deleteArtisan(artisan.user.id);
+        });
+        deleteCell.appendChild(deleteButton);
+        row.appendChild(deleteCell);
+    
+        // Append the row to the table body
+        tableBody.appendChild(row);
+    }
+    // Loop through the data and append rows to the table
+    
 }
 
 function deleteArtisan(artisanId) {

@@ -23,8 +23,8 @@ class ServiceController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-
+{
+    try {
         $request->validate([
             'name' => 'required|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -32,11 +32,12 @@ class ServiceController extends Controller
             'pricing' => 'nullable|numeric',
             'artisan_id' => 'required|exists:artisans,id',
         ]);
-        $service = new service([
+
+        $service = new Service([
             'name' => $request->name,
             'estimated_time' => $request->estimated_time,
-            'artisan_id' =>$request->artisan_id,
-            'pricing' =>$request->pricing
+            'artisan_id' => $request->artisan_id,
+            'pricing' => $request->pricing
         ]);
 
         if ($request->hasFile('image')) {
@@ -44,9 +45,16 @@ class ServiceController extends Controller
             $path = $image->store('images', 'public');
             $service->image = 'http://127.0.0.1:8000/storage' . '/' . $path;
         }
+
         $service->save();
+
         return response()->json(['service' => $service], 201);
+    } catch (\Exception $e) {
+        // Handle the exception here
+        return response()->json(['error' => $e->getMessage()], 500);
     }
+}
+
 
     /**
      * Display the specified resource.
@@ -67,7 +75,7 @@ class ServiceController extends Controller
     {
         try {
             $service = Service::findOrFail($id);
-    
+
             $request->validate([
                 'name' => 'required|string',
                 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -75,21 +83,21 @@ class ServiceController extends Controller
                 'pricing' => 'nullable|numeric',
                 'artisan_id' => 'required|exists:artisans,id',
             ]);
-    
+
             $service->update($request->except('image'));
-    
+
             if ($request->hasFile('image')) {
                 // Delete the old image if it exists
                 if ($service->image) {
                     Storage::delete('public/' . $service->image);
                 }
-    
+
                 // Upload the new image
                 $imagePath = $request->file('image')->store('public/images');
                 $service->image = 'http://127.0.0.1:8000/storage' . '/' . str_replace('public/', '', $imagePath);
                 $service->save();
             }
-    
+
             return response()->json(['service' => $service], 200);
         } catch (\Exception $e) {
             // Handle exceptions

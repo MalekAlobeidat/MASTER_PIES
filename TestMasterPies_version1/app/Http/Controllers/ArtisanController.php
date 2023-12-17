@@ -29,7 +29,7 @@ class ArtisanController extends Controller
         try {
             $artisan = Artisan::with(['user', 'specialty', 'services'])->findOrFail($id);
             $artisan_cities = Artisan_city::where('artisan_id', $id)->get();
-    
+
             return response()->json([
                 'artisan' => $artisan,
                 'artisan_cities' => $artisan_cities
@@ -43,26 +43,43 @@ class ArtisanController extends Controller
      */
     public function update(Request $request, $id)
     {
-    try {
-        $artisan = Artisan::findOrFail($id);
+        try {
+            // Attempt to find the artisan by ID
+            $artisan = Artisan::findOrFail($id);
 
-        $request->validate([
-            'years_of_experience' => 'required|integer',
-            'jerny' => 'nullable|string',
-            'formal_education' => 'nullable|string',
-            'apprenticeships' => 'nullable|string',
-            'association_memberships' => 'nullable|string',
-            'user_id' => 'required|exists:users,id',
-            'specialty_id' => 'nullable|exists:specialties,id',
-            'phone_number' => 'required|string',
-        ]);
+            // Validate the request data
+            $request->validate([
+                'years_of_experience' => 'required|integer',
+                'jerny' => 'nullable|string',
+                'formal_education' => 'nullable|string',
+                'apprenticeships' => 'nullable|string',
+                'association_memberships' => 'nullable|string',
+                'specialty_id' => 'nullable|exists:specialties,id',
+                'phone_number' => 'required',
+            ]);
 
-        $artisan->update($request->all());
+            // dd($request);
+            // Update the artisan with the new data
+            $artisan->update($request->all());
 
-        return response()->json(['artisan' => $artisan], 200);
-    } catch (\Exception $e) {
-        return response()->json(['error' => 'Error updating artisan'], 500);
+            // Return a success response
+            return response()->json(['artisan' => $artisan], 200);
+
+        } catch (ModelNotFoundException $e) {
+            // Handle the case where the artisan with the given ID was not found
+            return response()->json(['error' => 'Artisan not found'], 404);
+
+        } catch (ValidationException $e) {
+            // Handle validation errors
+            return response()->json(['error' => $e->errors()], 422);
+
+        } catch (\Exception $e) {
+            // Catch any other general exceptions
+            \Log::error('Error updating artisan: ' . $e->getMessage());
+
+            return response()->json(['error' => 'Error updating artisan'], 500);
+        }
     }
-    }
+
 
 }

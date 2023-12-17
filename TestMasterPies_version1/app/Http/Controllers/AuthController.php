@@ -19,29 +19,29 @@ class AuthController extends Controller
                 'password' => 'required|string|confirmed',
                 'role_id' => 'required'
             ]);
-    
+
             $user = User::create([
                 'name' => $data['name'],
                 'email' => $data['email'],
                 'password' => bcrypt($data['password']),
                 'role_id' => $data['role_id']
             ]);
-    
+
             $artisan = null;
-    
+
             if ($user->role_id == 2) {
                 $artisanData = [
                     'years_of_experience' => 0,
                     'user_id' => $user->id,
-                ];        
+                ];
                 $artisan = Artisan::create($artisanData);
             }
-    
+
             $res = [
                 'user' => $user,
                 'artisan' => $artisan,
             ];
-    
+
             return response()->json($res, 201);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Error creating user or artisan'], 500);
@@ -54,19 +54,21 @@ class AuthController extends Controller
                 'email' => 'required|string',
                 'password' => 'required|string'
             ]);
-    
+
             $user = User::where('email', $data['email'])->first();
-    
+
             if (!$user || !Hash::check($data['password'], $user->password)) {
                 return response(['msg' => 'Incorrect username or password'], 401);
             }
-    
+
             $token = $user->createToken('apiToken')->plainTextToken;
+            $user->load('artisan');
+
             $res = [
                 'user' => $user,
                 'token' => $token,
             ];
-    
+
             return response()->json($res, 200);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Error during login'], 500);

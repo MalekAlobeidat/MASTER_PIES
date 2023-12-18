@@ -1,5 +1,6 @@
 * {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Barlow Condensed', sans-serif;
+  
 }
 
 header {
@@ -16,7 +17,7 @@ header {
 }
 
 .admin-wrapper .left-sidebar {
-  width: 15%;
+  width: 17%;
   height: 100%;
   background: black;
 }
@@ -49,7 +50,7 @@ header {
 }
 
 .admin-content .page-title {
-  text-align: center;
+  font-size: 30px;
   margin-bottom: 1.5rem;
 }
 
@@ -89,9 +90,6 @@ td {
   text-decoration: underline;
 }
 
-form div {
-  margin-bottom: 15px;
-}
 
 .container {
   width: 100%;

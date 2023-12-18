@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@1,500&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+        integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Candal|Lora" rel="stylesheet">
+
+    <!-- Custom Styling -->
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <!-- Admin Styling -->
+    <link rel="stylesheet" href="../../css/admin.css">
+    <style>
+        * {
+            font-size: 25px;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+        }
+
+        .custom-form {
+            margin-top: 50px;
+            width: 95%;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .form-input,
+        .form-textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .form-button {
+            background-color: red;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .form-button:hover {
+            background-color: black;
+        }
+    </style>
+
+    <title>Admin Section - Manage Posts</title>
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            <a href="/Home/HomePage.html"><img src="/Img/Screenshot 2023-11-25 141054.png" alt=""></a>
+        </div>
+    </header>
+
+    <!-- Admin Page Wrapper -->
+    <div class="admin-wrapper">
+
+        <!-- Left Sidebar -->
+        <div class="left-sidebar">
+            <ul>
+                <li><a href="/Home/HomePage.html">Home</a></li>
+                <li><a href="/admin2/admin/ArtisanDashboard/ProfileArtisan.html">Profile</a></li>
+                <li><a href="/admin2/admin/ArtisanDashboard/Information.html">Information</a></li>
+                <li><a href="/admin2/admin/ArtisanDashboard/Service.html">Add Service</a></li>
+                <li><a href="/admin2/admin/ArtisanDashboard/Post.html">View Service</a></li>
+            </ul>
+        </div>
+        <!-- // Left Sidebar -->
+
+
+        <!-- Admin Content -->
+        <div class="admin-content">
+            <h2>Information :</h2>
+            <div class="container-artisans">
+                <form id="artisanForm" class="custom-form">
+                    <label for="service-type" class="form-label">Choose Specialty Type:</label>
+                    <select id="service-type" name="service-type">
+                    </select>
+                    <br>
+                    <br>
+                    <label for="phone_number" class="form-label">Phone Number:</label>
+                    <input type="text" id="phone_number" name="phone_number" class="form-input" required>
+
+                    <label for="years_of_experience" class="form-label">Years of Experience:</label>
+                    <input type="number" id="years_of_experience" name="years_of_experience" class="form-input"
+                        required>
+
+                    <label for="jerny" class="form-label">Jerny:</label>
+                    <textarea id="jerny" name="jerny" class="form-textarea" required></textarea>
+
+                    <label for="formal_education" class="form-label">Formal Education:</label>
+                    <input type="text" id="formal_education" name="formal_education" class="form-input" required>
+
+                    <label for="apprenticeships" class="form-label">Apprenticeships:</label>
+                    <textarea id="apprenticeships" name="apprenticeships" class="form-textarea" required></textarea>
+
+                    <label for="association_memberships" class="form-label">Association Memberships:</label>
+                    <input type="text" id="association_memberships" name="association_memberships" class="form-input"
+                        required>
+
+                    <button type="button" onclick="submitForm()" class="form-button">Update</button>
+                </form>
+            </div>
+        </div>
+        <!-- // Admin Content -->
+
+    </div>
+    <!-- // Page Wrapper -->
+
+    <!-- JavaScript Section -->
+    <script>
+        // function submitForm() {
+        //     // جمع القيم من النموذج
+        //     const phoneNumber = document.getElementById('phone_number').value;
+        //     const yearsOfExperience = document.getElementById('years_of_experience').value;
+        //     const jerny = document.getElementById('jerny').value;
+        //     const formalEducation = document.getElementById('formal_education').value;
+        //     const apprenticeships = document.getElementById('apprenticeships').value;
+        //     const associationMemberships = document.getElementById('association_memberships').value;
+
+        //     let id = localStorage.getItem("artisan_id")
+
+        //     const formData = {
+        //         phone_number: phoneNumber,
+        //         years_of_experience: yearsOfExperience,
+        //         jerny: jerny,
+        //         formal_education: formalEducation,
+        //         apprenticeships: apprenticeships,
+        //         association_memberships: associationMemberships,
+
+        //     };
+
+        //     // تحديد عنوان الخادم
+        //     const apiUrl = `http://127.0.0.1:8000/api/artisans/${id}`; // يجب أن تحدده بناءً على عنوان الخادم الخاص بك
+
+        //     // إرسال الطلب إلى الخادم باستخدام Fetch API
+        //     fetch(apiUrl, {
+        //         method: 'PUT',
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //         },
+        //         body: JSON.stringify(formData),
+        //     })
+        //         .then(response => response.json())
+        //         .then(data => {
+        //             console.log('تم تحديث البيانات بنجاح:', data);
+        //         })
+        //         .catch(error => {
+        //             console.error('حدث خطأ أثناء تحديث البيانات:', error);
+        //         });
+        // }
+
+
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            fetch('http://127.0.0.1:8000/api/specialties')
+                .then(response => {
+                    if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Handle the data from the API
+                    console.log(data);
+
+                    // Select the dropdown element
+                    const selectElement = document.getElementById('service-type');
+
+                    // Iterate over the specialties array in the JSON data and create an option for each
+                    data.specialties.forEach(specialty => {
+                    const option = document.createElement('option');
+                    option.value = specialty.id;
+                    option.text = specialty.name;
+                    selectElement.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error('There was a problem with the fetch operation:', error);
+                });
+            // 1. Retrieve artisan ID from localStorage
+            const artisanId = localStorage.getItem("artisan_id");
+
+            // 2. Fetch artisan data using the provided ID
+            fetch(`http://127.0.0.1:8000/api/artisans/${artisanId}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    // 3. Populate the form fields with the retrieved data
+                    document.getElementById("service-type").value = data.artisan.specialty_id;
+                    document.getElementById("phone_number").value = data.artisan.phone_number;
+                    document.getElementById("years_of_experience").value = data.artisan.years_of_experience;
+                    document.getElementById("jerny").value = data.artisan.jerny;
+                    document.getElementById("formal_education").value = data.artisan.formal_education;
+                    document.getElementById("apprenticeships").value = data.artisan.apprenticeships;
+                    document.getElementById("association_memberships").value = data.artisan.association_memberships;
+                    localStorage.setItem('specialty_id',data.artisan.specialty.id);
+                })
+                .catch(error => console.error("Error fetching artisan data:", error));
+
+
+
+        });
+
+
+
+        function submitForm() {
+            // Gather the values from the form
+            const phoneNumber = document.getElementById('phone_number').value;
+            const yearsOfExperience = document.getElementById('years_of_experience').value;
+            const jerny = document.getElementById('jerny').value;
+            const formalEducation = document.getElementById('formal_education').value;
+            const apprenticeships = document.getElementById('apprenticeships').value;
+            const associationMemberships = document.getElementById('association_memberships').value;
+            const selectElement = document.getElementById('service-type');
+            const specialtyID = selectElement.value;
+
+            // Build the JSON payload
+            const payload = {
+                phone_number: phoneNumber,
+                years_of_experience: yearsOfExperience,
+                jerny: jerny,
+                formal_education: formalEducation,
+                apprenticeships: apprenticeships,
+                association_memberships: associationMemberships,
+                specialty_id:specialtyID
+            };
+
+            // Send the PUT request with JSON payload
+            fetch(`http://127.0.0.1:8000/api/artisans/${localStorage.getItem("artisan_id")}`, {
+                method: "PUT",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+                body: JSON.stringify(payload),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Artisan updated successfully:", data);
+
+                    // Optionally, you can redirect or show a success message here
+                })
+                .catch(error => console.error("Error updating artisan:", error));
+        }
+    </script>
+    <!-- // JavaScript Section -->
+
+</body>
+
+</html>

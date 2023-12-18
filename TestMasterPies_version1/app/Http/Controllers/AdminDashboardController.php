@@ -27,7 +27,7 @@ class AdminDashboardController extends Controller
                     ->orderByDesc('artisan_count')
                     ->limit(5)
                     ->get(),
-    
+
                 'cities' => DB::table('cities')
                     ->select('cities.name', DB::raw('COUNT(artisan_cities.artisan_id) AS artisan_count'))
                     ->leftJoin('artisan_cities', 'cities.id', '=', 'artisan_cities.city_id')
@@ -44,15 +44,15 @@ class AdminDashboardController extends Controller
                 'TotalCities' => DB::table('cities')->count(),
 
 
-    
+
                 // Add other statistics in a similar manner
             ];
-    
+
             return response()->json(['statistics' => $statistics]);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()]);
         }
-    
+
     }
 
     private function getTotalReports()
@@ -130,7 +130,7 @@ class AdminDashboardController extends Controller
 // public function search(Request $request)
 // {
 //     $searchInput = $request->input('SEARCHINPUT');
-    
+
 //     $result = User::with('artisan')
 //     ->where('role_id', '=', 2)
 //     ->where(function ($query) use ($searchInput) {
@@ -185,4 +185,20 @@ public function filterAndsearch(Request $request)
         return response()->json(['error' => 'Error fetching artisans'], 500);
     }
 }
+
+public function artisanServices($id) {
+    try {
+        $artisan = Artisan::findOrFail($id);
+        $services = Service::where('artisan_id', $id)->get();
+
+        return response()->json(['services' => $services], 200);
+    } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+        // Handle the case where the artisan with the given ID is not found
+        return response()->json(['error' => 'Artisan not found'], 404);
+    } catch (\Exception $e) {
+        // Handle other exceptions
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+}
+
 }

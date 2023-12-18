@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@1,500&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+        integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Candal|Lora" rel="stylesheet">
+
+    <!-- Custom Styling -->
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <!-- Admin Styling -->
+    <link rel="stylesheet" href="../../css/admin.css">
+    <title>Document</title>
+    <style>
+        * {
+            font-size: 25px;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        form {
+            max-width: 400px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        select,
+        input {
+            width: 50%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            background-color: red;
+            color: #fff;
+            cursor: pointer;
+            transition: 0.2s;
+            border: none;
+            border-radius: 5px;
+            width: 100%;
+        }
+
+        .input:hover {
+            background-color: black;
+            color: white;
+        }
+
+        #servicesContainer {
+            display: flex;
+            flex-wrap: wrap;
+            width: 100%;
+            justify-content: space-around;
+        }
+
+        .service-item {
+            width: 300px;
+            margin: 20px;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+        }
+
+        .service-image {
+            margin-top: 10px;
+        }
+
+        
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">
+            <a href="/Home/HomePage.html"><img src="/Img/Screenshot 2023-11-25 141054.png" alt=""></a>
+        </div>
+    </header>
+
+    <!-- Admin Page Wrapper -->
+    <div class="admin-wrapper">
+
+        <!-- Left Sidebar -->
+        <div class="left-sidebar">
+            <ul>
+                <li><a href="/Home/HomePage.html">Home</a></li>
+                <li><a href="/admin2/admin/ArtisanDashboard/ProfileArtisan.html">Profile</a></li>
+                <li><a href="/admin2/admin/ArtisanDashboard/Information.html">Information</a></li>
+                <li><a href="/admin2/admin/ArtisanDashboard/Service.html">Add Service</a></li>
+                <li><a href="/admin2/admin/ArtisanDashboard/Post.html">View Service</a></li>
+            </ul>
+        </div>
+        <div id="servicesContainer"></div>
+        <!-- <div class="admin-content">
+            <h2>Service Form:</h2>
+            <div class="container-artisans" id="imageContainer">
+                <form id="serviceForm" action="/process-form" method="post" enctype="multipart/form-data">
+                    <div>
+                        <label for="serviceName">Name Service: <span id="serviceNameSpan"></span></label>
+                    </div>
+                    <br>
+                    <div>
+                        <label for="estimatedTime">Estimated Time: <span id="estimatedTimeSpan"></span></label>
+                    </div>
+                    <br>
+                    <div>
+                        <label for="price">Price: <span id="priceSpan"></span></label>
+                    </div>
+                    <br>
+                    <div>
+                        <label for="image">Image:</label>
+                        <div style="width: 200px; height: 200px; overflow: hidden;">
+                            <img id="preview" src="/Img/add-img.png"
+                                style="width: 100%; height: 100%; border-radius: 15px; object-fit: cover;" alt="">
+                        </div>
+                    </div>
+                    <input class="input" type="submit" value="Edit">
+                </form>
+            </div>
+        </div> -->
+        
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Fetch service data based on the ID
+            fetch(`http://127.0.0.1:8000/api/artisanSercices/${localStorage.getItem('artisan_id')}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    const servicesContainer = document.getElementById('servicesContainer');
+
+                    // Loop through services and create HTML elements
+                    data.services.forEach(service => {
+                        const serviceDiv = document.createElement('div');
+                        serviceDiv.innerHTML = `
+                    <div class="service-item">
+                        <p>Name Service: ${service.name}</p>
+                        <p>Estimated Time: ${service.estimated_time}</p>
+                        <p>Price: ${service.pricing}</p>
+                        <div>
+                            
+                            <div class="service-image" style="width: 270px; height: 270px; overflow: hidden;">
+                                <img src="${service.image}" style="width: 100%; height: 100%; border-radius: 15px; object-fit: cover;" alt="">
+                            </div>
+                            <br>
+                            <a href="/admin2/admin/ArtisanDashboard/Edit.html?id=${service.id}"><input class="input" type="submit" value="Edit"></a>
+                            <input type="hidden" value="${service.id}">
+                        </div>
+                    </div>
+                `;
+                        servicesContainer.appendChild(serviceDiv);
+                    });
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        });
+    </script>
+</body>
+
+
+</html>

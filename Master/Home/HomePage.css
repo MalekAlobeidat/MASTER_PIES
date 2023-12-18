@@ -275,6 +275,7 @@ body {
 
 .Artisans {
   width: 100%;
+  gap: 20px;
 }
 
 .card-Artisans {

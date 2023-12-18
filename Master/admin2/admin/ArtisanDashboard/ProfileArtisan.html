@@ -4,7 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Update Profile</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@1,500&display=swap"
+        rel="stylesheet">
     <!-- Custom Styling -->
     <link rel="stylesheet" href="../../css/style.css">
 
@@ -17,6 +21,7 @@
             margin: 0;
             padding: 0;
             width: 100%;
+            font-size: 23px;
         }
 
         .form-profile {
@@ -29,7 +34,6 @@
             justify-content: center;
             align-items: center;
             background-color: #fff;
-
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -75,6 +79,7 @@
             cursor: pointer;
             width: 100%;
             transition: 0.2s;
+            font-size: 23px;
         }
 
         .submit-btn:hover {
@@ -86,21 +91,8 @@
 <body>
     <header>
         <div class="logo">
-            <h1 class="logo-text"><span>Velvet</span>Strides</h1>
+            <a href="/Home/HomePage.html"><img src="/Img/Screenshot 2023-11-25 141054.png" alt=""></a>
         </div>
-        <i class="fa fa-bars menu-toggle"></i>
-        <ul class="nav">
-            <li>
-                <a href="#">
-                    <i class="fa fa-user"></i>
-                    Awa Melvine
-                    <i class="fa fa-chevron-down" style="font-size: .8em;"></i>
-                </a>
-                <ul>
-                    <li><a href="#" class="logout">Logout</a></li>
-                </ul>
-            </li>
-        </ul>
     </header>
 
     <!-- Admin Page Wrapper -->
@@ -111,28 +103,32 @@
             <ul>
                 <li><a href="/Home/HomePage.html">Home</a></li>
                 <li><a href="/admin2/admin/ArtisanDashboard/ProfileArtisan.html">Profile</a></li>
-                <li><a href="/admin2/admin/ArtisanDashboard/Artisan.html">Specialty</a></li>
+                <li><a href="/admin2/admin/ArtisanDashboard/Information.html">Information</a></li>
+                <li><a href="/admin2/admin/ArtisanDashboard/Service.html">Add Service</a></li>
+                <li><a href="/admin2/admin/ArtisanDashboard/Post.html">View Service</a></li>
             </ul>
         </div>
 
         <div class="form-container">
-            <form class="form-profile">
+            <form class="form-profile" id="updateForm">
                 <div style="display: flex; justify-content: center; align-items: center; border-radius: 50%;">
-                    <img id="preview" src="/Img/Blank-team-member-photo-800x800.jpg" style="width: 200px; height: 200px; border-radius: 50%;">
+                    <img id="preview" src="/Img/Blank-team-member-photo-800x800.jpg"
+                        style="width: 200px; height: 200px; border-radius: 50%;">
                 </div>
                 <div class="form-group">
-                    <label class="label" for="username">Username:</label>
-                    <input class="input" type="text" id="username" name="username" required>
+                    <label class="label" for="name">Name:</label>
+                    <input class="input" type="text" id="name" name="name" required style="font-size: 20px;">
                 </div>
 
                 <div class="form-group">
                     <label class="label" for="email">Email:</label>
-                    <input class="input" type="email" id="email" name="email" required>
+                    <input class="input" type="email" id="email" name="email" required style="font-size: 20px;">
                 </div>
 
                 <div class="form-group">
                     <label class="label" for="password">Password:</label>
-                    <input class="input" type="password" id="password" name="password" required>
+                    <input class="input" type="password" id="password" name="password" required
+                        style="font-size: 20px;">
                 </div>
 
                 <div class="form-group">
@@ -144,32 +140,122 @@
             </form>
         </div>
 
-
-
         <script>
-            const imgInput = document.getElementById('img');
-            const previewImg = document.getElementById('preview');
+            document.addEventListener('DOMContentLoaded', function () {
+                const form = document.getElementById('updateForm');
+                const previewImg = document.getElementById('preview');
 
-            imgInput.addEventListener('change', function () {
-                const file = this.files[0];
+                // استرجاع البيانات من localStorage
+                const storedName = localStorage.getItem('name');
+                const storedEmail = localStorage.getItem('email');
+                const storedPassword = localStorage.getItem('password');
+                const storedImg = localStorage.getItem('img');
+                const userId = localStorage.getItem('user_id');
 
-                if (file) {
-                    const reader = new FileReader();
+                // وضع البيانات في حقول النموذج إذا كانت متاحة
+                if (storedName) {
+                    document.getElementById('name').value = storedName;
+                }
+                if (storedEmail) {
+                    document.getElementById('email').value = storedEmail;
+                }
+                if (storedPassword) {
+                    document.getElementById('password').value = storedPassword;
+                }
+                if (storedImg) {
+                    previewImg.src = storedImg;
+                    previewImg.style.display = 'block';
+                }
 
-                    reader.addEventListener('load', function () {
-                        previewImg.src = reader.result;
+                // API GET
+                fetch(`http://127.0.0.1:8000/api/users/${userId}`, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest',
+                    },
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        // هنا يمكنك معالجة البيانات التي تم استرجاعها
+                        console.log('GET Response:', data);
+
+                        // تحديث النموذج بالبيانات المسترجعة
+                        document.getElementById('name').value = data.user.name;
+                        document.getElementById('email').value = data.user.email;
+
+                        // تحديث عنصر الصورة بالصورة المسترجعة من الـ API
+                        previewImg.src = data.user.image;
                         previewImg.style.display = 'block';
+
+                        // ... يمكنك تحديد المزيد من الحقول حسب الحاجة
+                    })
+                    .catch(error => {
+                        console.error('حدث خطأ أثناء جلب البيانات:', error);
                     });
 
-                    reader.readAsDataURL(file);
-                } else {
-                    previewImg.src = '#';
-                    previewImg.style.display = 'none';
-                }
+                form.addEventListener('submit', function (event) {
+                    event.preventDefault();
+
+                    const updatedName = document.getElementById('name').value;
+                    const updatedEmail = document.getElementById('email').value;
+                    const updatedPassword = document.getElementById('password').value;
+
+                    const formData = new FormData();
+                    formData.append('name', updatedName);
+                    formData.append('email', updatedEmail);
+                    formData.append('password', updatedPassword);
+
+                    const imgInput = document.getElementById('img');
+                    const file = imgInput.files[0];
+                    if (file) {
+                        formData.append('image', file);
+                    }
+
+                    // API POST
+                    fetch(`http://127.0.0.1:8000/api/users/${userId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest',
+                        },
+                        body: formData,
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log('POST Response:', data);
+                        })
+                        .catch(error => {
+                            console.error('حدث خطأ أثناء تحديث البيانات:', error);
+                        });
+                });
+
+                const imgInput = document.getElementById('img');
+                imgInput.addEventListener('change', function () {
+                    const file = this.files[0];
+
+                    if (file) {
+                        const reader = new FileReader();
+
+                        reader.addEventListener('load', function () {
+                            previewImg.src = reader.result;
+                            previewImg.style.display = 'block';
+
+                            localStorage.setItem('img', reader.result);
+                        });
+
+                        reader.readAsDataURL(file);
+                    } else {
+                        previewImg.src = '#';
+                        previewImg.style.display = 'none';
+
+                        // إزالة الصورة من localStorage إذا لم يتم اختيار ملف
+                        localStorage.removeItem('img');
+                    }
+                });
             });
-
         </script>
+    </div>
 </body>
-
 
 </html>

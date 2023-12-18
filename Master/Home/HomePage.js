@@ -114,38 +114,44 @@ function updateNavigationLinks() {
         })
     }
 }
-fetch('http://127.0.0.1:8000/api/artisans')
-    .then(response => response.json())
-    .then(data => {
-        // Select the container div
+document.addEventListener('DOMContentLoaded', function () {
+    // When the page loads, fetch artisans' data
+    fetch('http://127.0.0.1:8000/api/artisans')
+        .then(response => response.json())
+        .then(data => {
+            // Update page elements based on the received data
+            // Display only 4 artisans
+            updateArtisans(data.artisans.slice(0, 4));
+        })
+        .catch(error => console.error('Error fetching artisans data:', error));
+
+    function updateArtisans(artisans) {
+        // The element we will update
         const artisansContainer = document.getElementById('artisansContainer');
 
-        // Loop through the artisans and create divs
-        for (let i = 0; i < 3 && i < data.artisans.length; i++) {
-            const artisan = data.artisans[i];
+        // Loop through artisans and update elements
+        artisans.forEach(artisan => {
+            const cardArtisan = document.createElement('div');
+            cardArtisan.classList.add('card-Artisans');
 
-            // Create a div for each artisan
-            const artisanDiv = document.createElement('div');
-            artisanDiv.className = 'card-Artisans';
+            const artisanImage = document.createElement('img');
+            artisanImage.src = artisan.user.image; // Update the image
+            artisanImage.alt = 'Artisan Image';
+            cardArtisan.appendChild(artisanImage);
 
-            // Add an image (assuming the image URL is available in the API response)
-            const imageElement = document.createElement('img');
-            imageElement.src = `/Img/sha7nfryon 24-4.jpg`;
-            imageElement.alt = '';
+            const artisanName = document.createElement('p');
+            artisanName.innerHTML = `Artisan Name: <span>${artisan.user.name}</span>`;
+            cardArtisan.appendChild(artisanName);
 
-            artisanDiv.appendChild(imageElement);
+            const artisanSpecialty = document.createElement('p');
+            artisanSpecialty.innerHTML = `Specialty: <span>${artisan.specialty}</span>`;
+            cardArtisan.appendChild(artisanSpecialty);
 
-            // Add artisan information
-            const artisanInfo = document.createElement('p');
-            artisanInfo.innerHTML = `Artisan Name: <span>${artisan.user.name}</span><br>Specialty: <span>${artisan.specialty.name}</span>`;
-
-            artisanDiv.appendChild(artisanInfo);
-
-            // Append the artisan div to the container
-            artisansContainer.appendChild(artisanDiv);
-        }
-    })
-    .catch(error => console.error('Error fetching data:', error));
+            // Add the new card to the container
+            artisansContainer.appendChild(cardArtisan);
+        });
+    }
+});
 
 
 

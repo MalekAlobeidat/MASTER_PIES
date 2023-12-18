@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@1,500&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+        integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Candal|Lora" rel="stylesheet">
+
+    <!-- Custom Styling -->
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <!-- Admin Styling -->
+    <link rel="stylesheet" href="../../css/admin.css">
+    <style>
+        * {
+            font-size: 25px;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        form {
+            max-width: 400px;
+            margin: auto;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        select,
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            background-color: red;
+            color: #fff;
+            cursor: pointer;
+            transition: 0.2s;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .input:hover {
+            background-color: black;
+            color: white;
+        }
+    </style>
+
+    <title>Admin Section - Manage Posts</title>
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            <a href="/Home/HomePage.html"><img src="/Img/Screenshot 2023-11-25 141054.png" alt=""></a>
+        </div>
+    </header>
+
+    <!-- Admin Page Wrapper -->
+    <div class="admin-wrapper">
+
+        <!-- Left Sidebar -->
+        <div class="left-sidebar">
+            <ul>
+                <li><a href="/Home/HomePage.html">Home</a></li>
+                <li><a href="/admin2/admin/ArtisanDashboard/ProfileArtisan.html">Profile</a></li>
+                <li><a href="/admin2/admin/ArtisanDashboard/Information.html">Information</a></li>
+                <li><a href="/admin2/admin/ArtisanDashboard/Service.html">Add Service</a></li>
+                <li><a href="/admin2/admin/ArtisanDashboard/Post.html">View Service</a></li>
+            </ul>
+        </div>
+        <!-- // Left Sidebar -->
+
+
+        <!-- Admin Content -->
+        <div class="admin-content">
+            <h2>Service Form:</h2>
+            <div class="container-artisans" id="imageContainer">
+                <form id="serviceForm" action="/process-form" method="post" enctype="multipart/form-data">
+                    <label for="service">Name Service:</label>
+                    <input type="text" id="service" name="service" placeholder="Name Service here" required>
+
+                    <label for="estimated_time">Estimated Time:</label>
+                    <input type="number" id="estimated_time" name="estimated_time" placeholder="Estimated Time here"
+                        required>
+
+                    <label for="price">Price:</label>
+                    <div>
+                        <input type="number" id="price" name="price" placeholder="Price here ($)" required>
+
+                        <label for="image1">Image:</label>
+                        <input type="file" id="image1" name="image1" accept="image/*" required
+                            onchange="previewImage(this)">
+                        <div style="width: 200px; height: 200px; overflow: hidden;">
+                            <img id="preview" src="/Img/add-img.png"
+                                style="width: 100%; height: 100%; border-radius: 15px; object-fit: cover;" alt="">
+                        </div>
+                        <input class="input" type="submit" value="Submit">
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var form = document.getElementById('serviceForm');
+
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
+
+                const nameService = document.getElementById('service').value;
+                const estimatedTime = document.getElementById('estimated_time').value;
+                const price = document.getElementById('price').value;
+
+                const formData = new FormData();
+                formData.append('name', nameService);
+                formData.append('estimated_time', estimatedTime);
+                formData.append('pricing', price);
+                formData.append('artisan_id', localStorage.getItem('artisan_id'));
+                
+                const imgInput = document.getElementById('image1');
+                    const file = imgInput.files[0];
+                    if (file) {
+                        formData.append('image', file);
+                    }
+
+                // Use Fetch API to send a POST request
+                fetch('http://127.0.0.1:8000/api/services', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest',
+                    },
+                    body: formData
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! Status: ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        // Handle the JSON response
+                        console.log('Service added successfully:', data);
+                        // You can add your logic to handle the response or update the UI
+                    })
+                    .catch(error => {
+                        console.error('Error adding service:', error);
+                    });
+            });
+        });
+
+        function previewImage(input) {
+            var preview = document.getElementById('preview');
+            var file = input.files[0];
+            var reader = new FileReader();
+
+            reader.onloadend = function () {
+                preview.src = reader.result;
+            };
+
+            if (file) {
+                reader.readAsDataURL(file);
+            } else {
+                preview.src = "/Img/add-img.png";
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -62,7 +62,11 @@ function login() {
             localStorage.setItem('name', name);
             localStorage.setItem('email', email);
             localStorage.setItem('password', password);
+            localStorage.setItem('user_id', data.user.id)
+            localStorage.setItem('artisan_id',data.user.artisan.id);
             localStorage.setItem('isLoggedin','true');
+            
+            // debugger;
 
             // Update navigation links based on user type
             updateNavigationLinks(userType);
@@ -71,7 +75,7 @@ function login() {
                 window.location.href = '../admin2/admin/AdminDashboard/General.html';
                 alert('Login is Successful');
             } else if (userType === 2) {
-                window.location.href = '../admin2/admin/ArtisanDashboard/Artisan.html';
+                window.location.href = '../admin2/admin/ArtisanDashboard/ProfileArtisan.html';
                 alert('Login is Successful');
             } else if (userType === 3) {
                 window.location.href = '../Home/HomePage.html';
@@ -101,7 +105,7 @@ function updateNavigationLinks(userType) {
     } else if (userType === 2) {
         // Artisan, change Signup to Artisan Dashboard and Login to Logout
         signupLink.textContent = "Artisan Dashboard";
-        signupLink.href = "/admin2/admin/ArtisanDashboard/Artisan.html";
+        signupLink.href = "/admin2/admin/ArtisanDashboard/ProfileArtisan.html";
         loginLink.textContent = "Logout";
         loginLink.href = "#";  // You can set the actual logout link or function here
     } else if (userType === 3) {

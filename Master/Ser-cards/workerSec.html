@@ -33,318 +33,196 @@
   </nav>
   <div class="workerContainer">
 
-
     <div class="servicProvider">
       <h1>Our Service Providers</h1>
     </div>
 
     <div class="searchConitaner">
-      <form class="searchform cf">
-        <input type="text" placeholder="what are you looking for ?" id="name-filter" />
-        <button type="submit">Search</button>
+
+      <form class="searchform cf" id="searchForm">
+        <div class="right">
+          <a href="/Ser-cards/workerSec.html" class="bton"><button>View all Artisans</button></a>
+          <button type="button" class="searchbtn" style="width: 100px; margin-left: 68px;" onclick="search()">Search</button>
+        </div>
+        <div class="mid">
+          <input type="text" placeholder="what are you looking for?" id="name-filter" />
+        </div>
+        <div class="left">
+          <select id="cities">
+            <option value="">Select City</option>
+          </select>
+          <select id="specialties">
+            <option value="">Select Specialty</option>
+          </select>
+        </div>
+
+
       </form>
     </div>
     <div class="cards">
       <div class="card">
-        <div class="card__image-holder">
-          <img class="card__image" src="" alt="" />
-        </div>
-        <div class="card-title">
-          <a href="#" class="toggle-info btn">
+        <a href="#" id="cardLink"> <!-- Set href to the desired page URL -->
+          <div class="card__image-holder">
+            <img class="card__image" src="" alt="" style="object-fit: cover;" />
+          </div>
+          <div class="card-title">
             <span class="left"></span>
             <span class="right"></span>
-          </a>
-          <h2>
-            Card title
-            <small>allawi 7beb glbi</small>
-          </h2>
-        </div>
-        <div class="card-flap flap1">
-          <div class="card-description">
-            This grid is an attempt to make something nice that works on touch
-            devices. Ignoring hover states when they're not available etc.
+            <h2>
+              Card title
+              <small>allawi 7beb glbi</small>
+            </h2>
+            <h3>sd</h3>
           </div>
-          <div class="card-flap flap2">
-            <div class="card-actions">
-              <a href="#" class="btn">Read more</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card__image-holder">
-          <img class="card__image" src="../images/2.webp" alt="beach" />
-        </div>
-        <div class="card-title">
-          <a href="#" class="toggle-info btn">
-            <span class="left"></span>
-            <span class="right"></span>
-          </a>
-          <h2>
-            Card title
-            <small>allawi 7beb glbi</small>
-          </h2>
-        </div>
-        <div class="card-flap flap1">
-          <div class="card-description">
-            This grid is an attempt to make something nice that works on touch
-            devices. Ignoring hover states when they're not available etc.
-          </div>
-          <div class="card-flap flap2">
-            <div class="card-actions">
-              <a href="#" class="btn">Read more</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card__image-holder">
-          <img class="card__image" src="../images/3.avif" alt="mountain" />
-        </div>
-        <div class="card-title">
-          <a href="#" class="toggle-info btn">
-            <span class="left"></span>
-            <span class="right"></span>
-          </a>
-          <h2>
-            Card title
-            <small>allawi 7beb glbi</small>
-          </h2>
-        </div>
-        <div class="card-flap flap1">
-          <div class="card-description">
-            This grid is an attempt to make something nice that works on touch
-            devices. Ignoring hover states when they're not available etc.
-          </div>
-          <div class="card-flap flap2">
-            <div class="card-actions">
-              <a href="#" class="btn">Read more</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card__image-holder">
-          <img class="card__image" src="../images/4.jpg" alt="field" />
-        </div>
-        <div class="card-title">
-          <a href="#" class="toggle-info btn">
-            <span class="left"></span>
-            <span class="right"></span>
-          </a>
-          <h2>
-            Card title
-            <small>allawi 7beb glbi</small>
-          </h2>
-        </div>
-        <div class="card-flap flap1">
-          <div class="card-description">
-            This grid is an attempt to make something nice that works on touch
-            devices. Ignoring hover states when they're not available etc.
-          </div>
-          <div class="card-flap flap2">
-            <div class="card-actions">
-              <a href="#" class="btn">Read more</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card__image-holder">
-          <img class="card__image" src="../images/5.png" alt="water" />
-        </div>
-        <div class="card-title">
-          <a href="#" class="toggle-info btn">
-            <span class="left"></span>
-            <span class="right"></span>
-          </a>
-          <h2>
-            Card title
-            <small>allawi 7beb glbi</small>
-          </h2>
-        </div>
-        <div class="card-flap flap1">
-          <div class="card-description">
-            This grid is an attempt to make something nice that works on touch
-            devices. Ignoring hover states when they're not available etc.
-          </div>
-          <div class="card-flap flap2">
-            <div class="card-actions">
-              <a href="#" class="btn">Read more</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card__image-holder">
-          <img class="card__image" src="../images/1.webp" alt="river" />
-        </div>
-        <div class="card-title">
-          <a href="#" class="toggle-info btn">
-            <span class="left"></span>
-            <span class="right"></span>
-          </a>
-          <h2>
-            Card title
-            <small>allawi 7beb glbi</small>
-          </h2>
-        </div>
-        <div class="card-flap flap1">
-          <div class="card-description">
-            This grid is an attempt to make something nice that works on touch
-            devices. Ignoring hover states when they're not available etc.
-          </div>
-          <div class="card-flap flap2">
-            <div class="card-actions">
-              <a href="#" class="btn">Read more</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card__image-holder">
-          <img class="card__image" src="https://source.unsplash.com/300x225/?kite" alt="kite" />
-        </div>
-        <div class="card-title">
-          <a href="#" class="toggle-info btn">
-            <span class="left"></span>
-            <span class="right"></span>
-          </a>
-          <h2>
-            Card title
-            <small>allawi 7beb glbi</small>
-          </h2>
-        </div>
-        <div class="card-flap flap1">
-          <div class="card-description">
-            This grid is an attempt to make something nice that works on touch
-            devices. Ignoring hover states when they're not available etc.
-          </div>
-          <div class="card-flap flap2">
-            <div class="card-actions">
-              <a href="#" class="btn">Read more</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card__image-holder">
-          <img class="card__image" src="https://source.unsplash.com/300x225/?underwater" alt="underwater" />
-        </div>
-        <div class="card-title">
-          <a href="#" class="toggle-info btn">
-            <span class="left"></span>
-            <span class="right"></span>
-          </a>
-          <h2>
-            Card title
-            <small>allawi 7beb glbi</small>
-          </h2>
-        </div>
-        <div class="card-flap flap1">
-          <div class="card-description">
-            This grid is an attempt to make something nice that works on touch
-            devices. Ignoring hover states when they're not available etc.
-          </div>
-          <div class="card-flap flap2">
-            <div class="card-actions">
-              <a href="#" class="btn">Read more</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card__image-holder">
-          <img class="card__image" src="https://source.unsplash.com/300x225/?desert" alt="desert" />
-        </div>
-        <div class="card-title">
-          <a href="#" class="toggle-info btn">
-            <span class="left"></span>
-            <span class="right"></span>
-          </a>
-          <h2>
-            Card title
-            <small>Image from </small>
-          </h2>
-        </div>
-        <div class="card-flap flap1">
-          <div class="card-description">
-            This grid is an attempt to make something nice that works on touch
-            devices. Ignoring hover states when they're not available etc.
-          </div>
-          <div class="card-flap flap2">
-            <div class="card-actions">
-              <a href="#" class="btn">Read more</a>
-            </div>
-          </div>
-        </div>
+        </a>
       </div>
     </div>
-    
-  </div>
-  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <div id="notFoundMessage" style="display: none; text-align: center; margin-top: 20px;">
+      <h3>No Match Found</h3>
+    </div>
 
-  <script>
-    /////for cards logic
-    $(document).ready(function () {
-      var zindex = 10;
+    <script>
+      // Function to create a card element based on artisan data
+      function createCard(artisan) {
 
-      $("div.card").click(function (e) {
-        e.preventDefault();
 
-        var isShowing = false;
+        var card = document.createElement("div");
+        card.classList.add("card");
 
-        if ($(this).hasClass("show")) {
-          isShowing = true;
+        var imageHolder = document.createElement("div");
+        imageHolder.classList.add("card__image-holder");
+
+        var image = document.createElement("img");
+        image.classList.add("card__image");
+        image.src = artisan.image;
+        image.alt = artisan.name;
+
+        imageHolder.appendChild(image);
+
+        var cardTitle = document.createElement("div");
+        cardTitle.classList.add("card-title");
+
+        var h2 = document.createElement("h2");
+        h2.textContent = artisan.name;
+
+        var small = document.createElement("small");
+        small.textContent = artisan.artisan && artisan.artisan.specialty ? artisan.artisan.specialty.name : "No Specialty";
+
+        var toggleInfoLink = document.createElement("a");
+        toggleInfoLink.href = `/ShowArtisan/Showartisan.html?id=${artisan.artisan.id}`;
+        toggleInfoLink.classList.add("toggle-info", "btn");
+        toggleInfoLink.textContent = "Show More"; // Set the text content
+        toggleInfoLink.style.color = "#ffffff"; // Set text color
+        toggleInfoLink.style.backgroundColor = "#007bff"; // Set background color
+        toggleInfoLink.style.padding = "5px 10px"; // Set padding
+
+
+        cardTitle.appendChild(toggleInfoLink);
+        cardTitle.appendChild(h2);
+        cardTitle.appendChild(small);
+
+        card.appendChild(imageHolder);
+        card.appendChild(cardTitle);
+
+        return card;
+      }
+
+      // Function to display artisans based on filter
+      function displayArtisans(searchInput, cityId, specialtyId) {
+        fetch("http://127.0.0.1:8000/api/filterAndsearch", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            SEARCHINPUT: searchInput,
+            city_id: cityId,
+            specialty_id: specialtyId,
+          }),
+        })
+          .then(response => response.json())
+          .then(data => {
+            var artisans = data.artisans;
+
+            var cardsContainer = document.querySelector(".cards");
+            cardsContainer.innerHTML = "";
+
+            if (artisans.length === 0) {
+              // Display "Not Found" message
+              document.getElementById("notFoundMessage").style.display = "block";
+            } else {
+              // Hide "Not Found" message
+              document.getElementById("notFoundMessage").style.display = "none";
+
+              // Display artisans
+              artisans.forEach(function (artisan) {
+                var card = createCard(artisan);
+                cardsContainer.appendChild(card);
+              });
+            }
+          });
+      }
+
+      document.addEventListener("DOMContentLoaded", function () {
+        var nameFilter = document.getElementById("name-filter");
+
+        function getParameterByName(name, url) {
+          if (!url) url = window.location.href;
+          name = name.replace(/[[]]/g, "\\$&");
+          var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            results = regex.exec(url);
+          if (!results) return null;
+          if (!results[2]) return '';
+          return decodeURIComponent(results[2].replace(/\+/g, ' '));
         }
 
-        if ($("div.cards").hasClass("showing")) {
-          // A card is already in view
-          $("div.card.show").removeClass("show");
+        var specialty_id = getParameterByName('id');
 
-          if (isShowing) {
-            // This card was showing - reset the grid
-            $("div.cards").removeClass("showing");
-          } else {
-            // This card isn't showing - get in with it
-            $(this).css({ zIndex: zindex }).addClass("show");
-          }
 
-          zindex++;
-        } else {
-          // No cards in view
-          $("div.cards").addClass("showing");
-          $(this).css({ zIndex: zindex }).addClass("show");
 
-          zindex++;
-        }
+        // Initial display of artisans
+        displayArtisans("", "", specialty_id);
+
+        // Event listener for name filter input
+        nameFilter.addEventListener("input", function () {
+          var searchInput = this.value.toLowerCase();
+          var cityId = document.getElementById('cities').value;
+          var specialtyId = document.getElementById('specialties').value;
+          displayArtisans(searchInput, cityId, specialtyId);
+        });
       });
 
-      $("#name-filter").on("input", function () {
-        var filterValue = $(this).val().toLowerCase();
-        $(".card")
-          .hide()
-          .filter(function () {
-            return $(this)
-              .find("h2")
-              .text()
-              .toLowerCase()
-              .includes(filterValue);
-          })
-          .show();
-      });
-    });
+      fetch('http://127.0.0.1:8000/api/getCitySpecialty')
+        .then(response => response.json())
+        .then(data => {
+          const citiesDropdown = document.getElementById('cities');
+          data.cities.forEach(city => {
+            const option = document.createElement('option');
+            option.value = city.id;
+            option.text = city.name;
+            citiesDropdown.add(option);
+          });
 
-    // Filter by name
-  </script>
+          const specialtiesDropdown = document.getElementById('specialties');
+          data.specialties.forEach(specialty => {
+            const option = document.createElement('option');
+            option.value = specialty.id;
+            option.text = specialty.name;
+            specialtiesDropdown.add(option);
+          });
+        })
+        .catch(error => console.error('Error fetching data:', error));
+
+      function search() {
+        let Searchinput = document.getElementById('name-filter').value;
+        let cities = document.getElementById('cities').value;
+        let specialties = document.getElementById('specialties').value;
+        displayArtisans(Searchinput, cities, specialties);
+      }
+
+
+    </script>
+    <script src="workerSec.js"></script>
 </body>
 
 </html>

@@ -51,7 +51,7 @@ header {
 
 .admin-content .page-title {
   font-size: 30px;
-  margin-bottom: 1.5rem;
+justify-content: space-between;  margin-bottom: 1.5rem;
 }
 
 .content-head {

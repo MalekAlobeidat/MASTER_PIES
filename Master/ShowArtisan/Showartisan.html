@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MEHANI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="Showartisan.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@1,500&display=swap"
+        rel="stylesheet">
+    <!-- Avoid duplicate title tags -->
+</head>
+
+<body>
+
+    <!-- start navbar -->
+    <nav class="navbar">
+        <div class="nav-left">
+            <a href="HomePage.html"><img src="../Img/Screenshot 2023-11-25 141054.png" alt="" /></a>
+            <div id="btn1" class="btn1">
+                <i id="btn-open" class="fa-solid fa-bars"></i>
+                <i id="btn-close" class="fa-solid fa-xmark"></i>
+            </div>
+        </div>
+        <div class="nav-right">
+            <ul id="list">
+                <li><a href="../Home/HomePage.html">Home</a></li>
+                <li><a href="/Our-policy/Ourpolicy.html">Our policy</a></li>
+                <li><a href="/Services/Services.html">Services</a></li>
+                <li id="signup"><a href="../Singup/Signup.html">Signup</a></li>
+                <li id="login"><a href="../Login/Login.html">Login</a></li>
+            </ul>
+        </div>
+    </nav>
+    <!-- end navbar -->
+
+    <div class="container">
+        <div class="main-section">
+            <div class="section-contant">
+                <h2>Name: <span id="artisanName"></span></h2>
+                <br>
+                <h2>Specialty: <span id="artisanSpecialty"></span></h2>
+                <br>
+                <h2><span id="artisanCities"></span></h2>
+                <br>
+                <h2>Phone Number: <span id="artisanPhoneNumber"></span></h2>
+                <br>
+                <h2>Years of Experience: <span id="artisanYearsofExperience"></span></h2>
+                <br>
+                <h2>Journey: <span id="artisanJourney"></span></h2>
+                <br>
+                <h2>Formal Education: <span id="artisanFormalEducation"></span></h2>
+                <br>
+                <h2>Apprenticeships: <span id="artisanApprenticeships"></span></h2>
+                <br>
+                <h2>Association Memberships: <span id="artisanAssociationMemberships"></span></h2>
+            </div>
+            <div class="section-image">
+                <img id="artisanImage" src="" alt="Artisan Image">
+            </div>
+        </div>
+        <div class="cards">
+            <div class="card" id="serviceCard">
+                <!-- Service information will be dynamically added here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function getParameterByName(name, url) {
+            if (!url) url = window.location.href;
+            name = name.replace(/[[]]/g, "\\$&");
+            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, ' '));
+        }
+
+        const id = getParameterByName('id');
+
+        function updateArtisanInfo(data) {
+
+            document.getElementById('artisanName').innerText = data.artisan.user.name;
+            document.getElementById('artisanSpecialty').innerText = data.artisan.specialty.name;
+            document.getElementById('artisanPhoneNumber').innerText = data.artisan.phone_number;
+            document.getElementById('artisanYearsofExperience').innerText = data.artisan.years_of_experience;
+            document.getElementById('artisanJourney').innerText = data.artisan.jerny;
+            document.getElementById('artisanFormalEducation').innerText = data.artisan.formal_education;
+            document.getElementById('artisanApprenticeships').innerText = data.artisan.apprenticeships;
+            document.getElementById('artisanAssociationMemberships').innerText = data.artisan.association_memberships;
+            document.getElementById('artisanImage').src = data.artisan.user.image;
+
+
+            const serviceCard = document.getElementById('serviceCard');
+            serviceCard.innerHTML = ""; // Clear previous content
+
+            if (data.artisan.services && data.artisan.services.length > 0) {
+                data.artisan.services.forEach(service => {
+                    const serviceDiv = document.createElement('div');
+                    serviceDiv.className = 'serviceDiv'; // Apply the CSS class
+                    serviceDiv.innerHTML = `
+                    <h3>Name Service: ${service.name}</h3>
+                    <h3>Estimated Time: ${service.estimated_time} minutes</h3>
+                    <h3>Price: $${service.pricing}</h3>
+                    <div class="img-service">
+                        <img src="${service.image}" alt="${service.name}">
+                    </div>
+                `;
+                    serviceCard.appendChild(serviceDiv);
+                });
+            } else {
+                console.warn('Warning: No service information available.');
+            }
+        }
+
+
+        const artisanCitiesSpan = document.getElementById('artisanCities');
+
+
+
+
+        fetch(`http://127.0.0.1:8000/api/artisans/${id}`)
+            .then(response => response.json())
+            .then(data => updateArtisanInfo(data))
+            .catch(error => console.error('Error fetching data:', error));
+
+        const artisanCitiesSpan1 = document.getElementById('artisanCities');
+
+        // استرجاع بيانات المدن من الاستجابة
+        fetch(`http://127.0.0.1:8000/api/artisans/${id}`)
+            .then(response => response.json())
+            .then(data => {
+                const artisanCitiesData = data.artisan_cities;
+
+                // التحقق مما إذا كان هناك مدن لعرضها
+                if (artisanCitiesData.length > 0) {
+                    // إنشاء مصفوفة لتخزين أسماء المدن
+                    const cityNames = artisanCitiesData.map(city => city.city.name);
+
+                    // عرض أسماء المدن في العنصر span
+                    artisanCitiesSpan1.innerText = 'Cities: ' + cityNames.join(', '); // يمكنك استخدام فاصلة أو أي شيء آخر بين الأسماء
+                } else {
+                    artisanCitiesSpan1.innerText = 'No cities available';
+                }
+            })
+            .catch(error => console.error('Error fetching data:', error));
+    </script>
+</body>
+
+</html>

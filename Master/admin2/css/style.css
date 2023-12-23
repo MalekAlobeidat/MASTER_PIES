@@ -36,16 +36,20 @@ a {
 
 .btn {
   padding: .5rem 1rem;
-  background-color:#5c5b5b;
+  background-color:red;
   color: white;
   border: 1px solid transparent;
   border-radius: .25rem;
   font-size: 1.08em;
-  font-family: 'Lora', serif;
+  transition: 0.2s;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: black;
 }
 
 .btn-big {
-  padding: .7rem 1.3rem;
   line-height: 1.3rem;
 }
 
@@ -56,15 +60,13 @@ a {
 
 .text-input {
   padding: .7rem 1rem;
-  display: block;
-  width: 100%;
+  width: 50%;
   border-radius: 5px;
   border: 1px solid #e0e0e0;
   outline: none;
   color: #444;
   line-height: 1.5rem;
   font-size: 1.2em;
-  font-family: 'Lora', serif;
 }
 
 .msg {

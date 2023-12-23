@@ -79,38 +79,38 @@ updateNavigationLinks();
 function updateNavigationLinks() {
     const isLoggedIn = localStorage.getItem('isLoggedin');
     const userType = localStorage.getItem('userType');
-    const login= document.getElementById("login");
-    const signup= document.getElementById("signup");
+    const login = document.getElementById("login");
+    const signup = document.getElementById("signup");
 
-    if (isLoggedIn=='true'&&userType==3){
-        login.textContent="logout";
-        signup.textContent="profile";
-        login.addEventListener("click",(e)=>{
-            window.location.href="../Home/HomePage.html";
+    if (isLoggedIn == 'true' && userType == 3) {
+        login.textContent = "logout";
+        signup.textContent = "profile";
+        login.addEventListener("click", (e) => {
+            window.location.href = "../Home/HomePage.html";
             localStorage.clear();
         })
-        signup.addEventListener("click",(e)=>{
-            window.location.href="/";
+        signup.addEventListener("click", (e) => {
+            window.location.href = "/";
         })
-    }else if(isLoggedIn=='true'&&userType==2){
-        login.textContent="logout";
-        signup.textContent="Dashboard";
-        login.addEventListener("click",(e)=>{
-            window.location.href="../Home/HomePage.html";
+    } else if (isLoggedIn == 'true' && userType == 2) {
+        login.textContent = "logout";
+        signup.textContent = "Dashboard";
+        login.addEventListener("click", (e) => {
+            window.location.href = "../Home/HomePage.html";
             localStorage.clear();
         })
-        signup.addEventListener("click",(e)=>{
-            window.location.href="/admin2/admin/ArtisanDashboard/Artisan.html";
-        }) 
-    }else if(isLoggedIn=='true'&&userType==1){
-        login.textContent="logout";
-        signup.textContent="Dashboard";
-        login.addEventListener("click",(e)=>{
-            window.location.href="../Home/HomePage.html";
+        signup.addEventListener("click", (e) => {
+            window.location.href = "/admin2/admin/ArtisanDashboard/Artisan.html";
+        })
+    } else if (isLoggedIn == 'true' && userType == 1) {
+        login.textContent = "logout";
+        signup.textContent = "Dashboard";
+        login.addEventListener("click", (e) => {
+            window.location.href = "../Home/HomePage.html";
             localStorage.clear();
         })
-        signup.addEventListener("click",(e)=>{
-            window.location.href="/admin2/admin/AdminDashboard/Artisans.html";
+        signup.addEventListener("click", (e) => {
+            window.location.href = "/admin2/admin/AdminDashboard/Artisans.html";
         })
     }
 }
@@ -126,11 +126,14 @@ document.addEventListener('DOMContentLoaded', function () {
         .catch(error => console.error('Error fetching artisans data:', error));
 
     function updateArtisans(artisans) {
+        console.log(artisans)
+
         // The element we will update
         const artisansContainer = document.getElementById('artisansContainer');
 
         // Loop through artisans and update elements
         artisans.forEach(artisan => {
+            console.log(artisan.specialty)
             const cardArtisan = document.createElement('div');
             cardArtisan.classList.add('card-Artisans');
 
@@ -144,7 +147,9 @@ document.addEventListener('DOMContentLoaded', function () {
             cardArtisan.appendChild(artisanName);
 
             const artisanSpecialty = document.createElement('p');
-            artisanSpecialty.innerHTML = `Specialty: <span>${artisan.specialty}</span>`;
+            artisanSpecialty.innerHTML = artisan.specialty && artisan.specialty.name
+                ? `Specialty: <span>${artisan.specialty.name}</span>`
+                : 'Specialty: <span>new</span>';
             cardArtisan.appendChild(artisanSpecialty);
 
             // Add the new card to the container
@@ -184,11 +189,11 @@ function submitData() {
         },
         body: JSON.stringify(data),
     })
-    .then(response => response.json())
-    .then(data => {
-        console.log('Success:', data);
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-    });
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
 }

@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@1,500&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+        integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Candal|Lora" rel="stylesheet">
+
+    <!-- Custom Styling -->
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <!-- Admin Styling -->
+    <link rel="stylesheet" href="../../css/admin.css">
+    <style>
+        * {
+            font-size: 25px;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+        }
+
+        hr {
+            margin: 0;
+            padding: 0;
+        }
+
+        .custom-form {
+            margin-top: 50px;
+            width: 95%;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .form-input,
+        .form-textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .form-button {
+            background-color: red;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .form-button:hover {
+            background-color: black;
+        }
+
+        #artisan-cities {
+            margin-top: 15px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .city-container {
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .bton {
+            background-color: red;
+            margin-left: 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100px;
+            height: 33px;
+            transition: 0.2s;
+
+        }
+
+        .bton:hover {
+            background-color: black;
+            color: white;
+        }
+
+        .container-with-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+        }
+
+        .artisan-button {
+            background-color: red;
+            color: white;
+            transition: 0.2s;
+            border: none;
+            border-radius: 5px;
+            height: 45px;
+            width: auto;
+            cursor: pointer;
+            margin-left: 25px;
+        }
+
+        .artisan-button:hover {
+            background-color: black;
+        }
+    </style>
+
+    <title>Admin Section - Manage Posts</title>
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            <a href="/Home/HomePage.html"><img src="/Img/Screenshot 2023-11-25 141054.png" alt=""></a>
+        </div>
+    </header>
+
+    <!-- Admin Page Wrapper -->
+    <div class="admin-wrapper">
+
+        <!-- Left Sidebar -->
+        <div class="left-sidebar">
+            <ul>
+                <li><a href="/Home/HomePage.html">Home</a></li>
+                <li><a href="/admin2/admin/ArtisanDashboard/ProfileArtisan.html">Profile</a></li>
+                <li><a href="/admin2/admin/ArtisanDashboard/Information.html">Information</a></li>
+                <li><a href="/admin2/admin/ArtisanDashboard/Service.html">Add Service</a></li>
+                <li><a href="/admin2/admin/ArtisanDashboard/Post.html">View Service</a></li>
+            </ul>
+        </div>
+        <!-- // Left Sidebar -->
+
+
+        <!-- Admin Content -->
+        <div class="admin-content">
+            <h2 style="color: black; font-size: 30px;">City and Specialty :</h2>
+            <div class="container-artisans">
+                <form id="artisanForm" class="custom-form">
+                    <label for="Specialty" class="form-label" style="font-size: 30px;">Specialty : <a href="./CreatSpecialty.html"><button type="button"
+                            style="margin-left: 50px;" onclick="createSpecialty()" class="form-button">Create</button>
+                        </a></label>
+                    <div id="specialtyContainer">
+                        <!-- Specialty options will be dynamically added here -->
+                    </div>
+                    <br>
+                    <br>
+                    <hr style="border: solid 1px;">
+                    <br>
+                    <label for="City" class="form-label" style="font-size: 30px;">City : <a href="./CreatCity.html"><button type="button"
+                            style="margin-left: 50px;" onclick="createCity()"
+                            class="form-button">Create</button></a></label>
+                    <div id="cityContainer">
+                        <!-- City options will be dynamically added here -->
+                    </div>
+                </form>
+            </div>
+        </div>
+        <script>
+            function fetchData(url) {
+                return fetch(url)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .catch(error => {
+                        console.error('Error fetching data:', error);
+                        throw error;
+                    });
+            }
+
+            fetchData('http://127.0.0.1:8000/api/getCitySpecialty')
+            .then(data => {
+                const specialtyContainer = document.getElementById('specialtyContainer');
+                data.specialties.forEach(specialty => {
+                    const specialtyDiv = document.createElement('div');
+                    specialtyDiv.classList.add('container-with-buttons');
+                    specialtyDiv.style.display = 'flex';
+
+                    const textContainer = document.createElement('div');
+                    textContainer.innerHTML = `<p value="${specialty.id}">${specialty.name}</p>`;
+                    specialtyDiv.appendChild(textContainer);
+
+                    const buttonsDiv = document.createElement('div');
+                    buttonsDiv.classList.add('artisan-buttons');
+                    buttonsDiv.style.display = 'flex';
+                    buttonsDiv.style.marginRight = '20px';
+
+                    const editButton = document.createElement('button');
+                    editButton.classList.add('artisan-button');
+                    editButton.innerText = 'Edit';
+                    editButton.type = 'button';
+                    editButton.addEventListener('click', () => editSpecialty(specialty.id));
+                    buttonsDiv.appendChild(editButton);
+
+                    const deleteButton = document.createElement('button');
+                    deleteButton.classList.add('artisan-button');
+                    deleteButton.innerText = 'Delete';
+                    deleteButton.style.marginLeft = '20px';
+                    deleteButton.type = 'button';
+                    deleteButton.addEventListener('click', () => deleteSpecialty(specialty.id));
+                    buttonsDiv.appendChild(deleteButton);
+
+                    specialtyDiv.appendChild(buttonsDiv);
+                    specialtyContainer.appendChild(specialtyDiv);
+
+                    const hrSpecialty = document.createElement('hr');
+                    specialtyContainer.appendChild(hrSpecialty);
+                });
+
+                const cityContainer = document.getElementById('cityContainer');
+                data.cities.forEach(city => {
+                    const cityDiv = document.createElement('div');
+                    cityDiv.classList.add('container-with-buttons');
+                    cityDiv.style.display = 'flex';
+                    cityDiv.style.marginRight = '20px';
+
+                    const textContainer = document.createElement('div');
+                    textContainer.innerHTML = `<p>${city.name}</p>`;
+                    cityDiv.appendChild(textContainer);
+
+                    const buttonsDiv = document.createElement('div');
+                    buttonsDiv.classList.add('artisan-buttons');
+                    buttonsDiv.style.display = 'flex';
+                    buttonsDiv.style.marginLeft = '20px';
+
+                    const editButton = document.createElement('button');
+                    editButton.classList.add('artisan-button');
+                    editButton.innerText = 'Edit';
+                    editButton.type = 'button';
+                    editButton.addEventListener('click', () => editCity(city.id) );
+                    buttonsDiv.appendChild(editButton);
+
+                    const deleteButton = document.createElement('button');
+                    deleteButton.classList.add('artisan-button');
+                    deleteButton.innerText = 'Delete';
+                    deleteButton.type = 'button';
+
+                    deleteButton.addEventListener('click', () => deleteCity(city.id));
+                    buttonsDiv.appendChild(deleteButton);
+
+                    cityDiv.appendChild(buttonsDiv);
+                    cityContainer.appendChild(cityDiv);
+
+                    const hrCity = document.createElement('hr');
+                    cityContainer.appendChild(hrCity);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+
+        function editSpecialty(id) {
+            window.location.href = `./CreatSpecialty.html?id=${id}`;
+        }
+
+        function deleteSpecialty(id) {
+            fetch(`http://127.0.0.1:8000/api/specialties/${id}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            // You may include additional headers if needed
+                },
+                // You can include a request body if required by the API
+                // body: JSON.stringify({ key: 'value' }),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                // Handle successful deletion
+                console.log(`City with ID ${id} deleted successfully.`);
+                location.reload();
+                // Optionally, you can reload the page or update the UI after deletion
+            })
+            .catch(error => {
+                // Handle errors during the DELETE request
+                console.error('Error deleting city:', error);
+            });
+
+        }
+
+        function editCity(id) {
+            window.location.href = `/admin2/admin/AdminDashboard/CreatCity.html?id=${id}`;
+        }
+
+        function deleteCity(id) {
+            fetch(`http://127.0.0.1:8000/api/cities/${id}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            // You may include additional headers if needed
+                },
+                // You can include a request body if required by the API
+                // body: JSON.stringify({ key: 'value' }),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                // Handle successful deletion
+                console.log(`City with ID ${id} deleted successfully.`);
+                location.reload();
+                // Optionally, you can reload the page or update the UI after deletion
+            })
+            .catch(error => {
+                // Handle errors during the DELETE request
+                console.error('Error deleting city:', error);
+            });
+
+            
+        }
+        </script>
+
+</body>
+
+</html>

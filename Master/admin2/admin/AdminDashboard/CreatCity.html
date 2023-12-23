@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+        integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@1,500&display=swap"
+        rel="stylesheet">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Candal|Lora" rel="stylesheet">
+
+    <!-- Custom Styling -->
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <!-- Admin Styling -->
+    <link rel="stylesheet" href="../../css/admin.css">
+
+    <title>Admin Section - Add User</title>
+    <style>
+        * {
+            font-size: 25px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            <a href="/Home/HomePage.html"><img src="/Img/Screenshot 2023-11-25 141054.png" alt=""></a>
+        </div>
+    </header>
+
+    <!-- Admin Page Wrapper -->
+    <div class="admin-wrapper">
+
+        <div class="left-sidebar">
+            <ul>
+                <li><a href="/Home/HomePage.html">Home</a></li>
+                <li><a href="/admin2/admin/AdminDashboard/General.html">General</a></li>
+                <li><a href="/admin2/admin/AdminDashboard/ProfileAdmin.html">Profile</a></li>
+                <li><a href="/admin2/admin/AdminDashboard/Artisans.html">Artisans</a></li>
+                <li><a href="/admin2/admin/AdminDashboard/CreatCity.html">Add City</a></li>
+                <li><a href="/admin2/admin/AdminDashboard/CreatSpecialty.html">Add Specialty</a></li>
+            </ul>
+        </div>
+
+
+        <!-- Admin Content -->
+        <div class="admin-content" style="text-align: center;">
+
+
+
+            <div class="content">
+
+                <h2 class="page-title" style="color: black;">Add City</h2>
+
+                <form action="create.html" method="post">
+                    <div style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                        <label>City Name : </label>
+                        <br>
+                        <input type="text" name="Specialty" class="text-input" placeholder="Write Specialty Name.."
+                            style="font-size: 20px;" id="inputField">
+                    </div>
+                    <br>
+                    <div>
+                        <button type="button" class="btn btn-big" id="updateCity" onclick="update()"> Update </button>
+                        </button>
+                        <button type="button" class="btn btn-big" id="createCity" onclick="create()"> Submit </button>
+                        </button>
+                        <a href="#"></a><button type="submit" class="btn btn-big"> Back
+
+                    </div>
+                </form>
+
+            </div>
+
+        </div>
+        <!-- // Admin Content -->
+
+    </div>
+    <!-- // Page Wrapper -->
+
+    <script>
+
+        function getParameterByName(name, url) {
+            if (!url) url = window.location.href;
+            name = name.replace(/[[]]/g, "\\$&");
+            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, ' '));
+        }
+
+        // Example of how to use the function
+        var cityID = getParameterByName('id');
+        if (cityID) {
+            // City ID is present, hide "Submit" button and show "Update" button
+            document.getElementById('updateCity').style.display = 'inline';
+            document.getElementById('createCity').style.display = 'none';
+            fetchCity(cityID);
+        } else {
+            // City ID is not present, hide "Update" button and show "Submit" button
+            document.getElementById('updateCity').style.display = 'none';
+            document.getElementById('createCity').style.display = 'inline';
+        }
+
+
+        function update() {
+            const id = cityID;
+            const name = document.getElementById('inputField').value;
+            const updatedData = {
+                name: name  // Replace with the updated data
+            };
+            const endpoint = `http://127.0.0.1:8000/api/cities/${id}`;
+            fetch(endpoint, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(updatedData)
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Handle the data from the server
+                    console.log('City updated successfully:', data);
+                    // You can use the data as needed (e.g., update UI)
+                })
+                .catch(error => {
+                    // Handle errors during the PUT request
+                    console.error('Error updating city:', error);
+                });
+        };
+
+
+        function create() {
+            const name = document.getElementById('inputField').value;
+            const Data = {
+                name: name  // Replace with the updated data
+            };
+            const endpoint = `http://127.0.0.1:8000/api/cities`;
+            fetch(endpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: JSON.stringify(Data)
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Handle the data from the server
+                    console.log('City created successfully:', data);
+                    // You can use the data as needed (e.g., update UI)
+                })
+                .catch(error => {
+                    // Handle errors during the PUT request
+                    console.error('Error creating city:', error);
+                });
+        };
+        function fetchCity(id) {
+            const endpoint = `http://127.0.0.1:8000/api/cities/${id}`;
+
+            // Make the GET request using fetch
+            fetch(endpoint)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Handle the data from the server
+                    console.log(data);
+                    document.getElementById('inputField').value = data.city.name;
+
+                    // You can use the data as needed (e.g., update UI)
+                })
+                .catch(error => {
+                    // Handle errors during the GET request
+                    console.error('Error fetching city data:', error);
+                });
+        }
+
+
+    </script>
+
+
+
+</body>
+
+</html>

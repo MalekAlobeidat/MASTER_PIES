@@ -74,6 +74,35 @@
         .form-button:hover {
             background-color: black;
         }
+
+        #artisan-cities {
+            margin-top: 15px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .city-container {
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .bton {
+            background-color: red;
+            margin-left: 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100px;
+            height: 33px;
+            transition: 0.2s;
+
+        }
+
+        .bton:hover {
+            background-color: black;
+            color: white;
+        }
     </style>
 
     <title>Admin Section - Manage Posts</title>
@@ -112,6 +141,12 @@
                     </select>
                     <br>
                     <br>
+                    <label for="city-type" class="form-label">Choose the cities where you can work</label>
+                    <select name="city-type" id="city-type"></select>
+                    <button type="button" class="bton" onclick="addCity()">Add +</button>
+                    <div id="artisan-cities"></div>
+                    <br>
+                    <br>
                     <label for="phone_number" class="form-label">Phone Number:</label>
                     <input type="text" id="phone_number" name="phone_number" class="form-input" required>
 
@@ -132,6 +167,8 @@
                     <input type="text" id="association_memberships" name="association_memberships" class="form-input"
                         required>
 
+
+
                     <button type="button" onclick="submitForm()" class="form-button">Update</button>
                 </form>
             </div>
@@ -139,90 +176,19 @@
         <!-- // Admin Content -->
 
     </div>
-    <!-- // Page Wrapper -->
-
-    <!-- JavaScript Section -->
     <script>
-        // function submitForm() {
-        //     // جمع القيم من النموذج
-        //     const phoneNumber = document.getElementById('phone_number').value;
-        //     const yearsOfExperience = document.getElementById('years_of_experience').value;
-        //     const jerny = document.getElementById('jerny').value;
-        //     const formalEducation = document.getElementById('formal_education').value;
-        //     const apprenticeships = document.getElementById('apprenticeships').value;
-        //     const associationMemberships = document.getElementById('association_memberships').value;
-
-        //     let id = localStorage.getItem("artisan_id")
-
-        //     const formData = {
-        //         phone_number: phoneNumber,
-        //         years_of_experience: yearsOfExperience,
-        //         jerny: jerny,
-        //         formal_education: formalEducation,
-        //         apprenticeships: apprenticeships,
-        //         association_memberships: associationMemberships,
-
-        //     };
-
-        //     // تحديد عنوان الخادم
-        //     const apiUrl = `http://127.0.0.1:8000/api/artisans/${id}`; // يجب أن تحدده بناءً على عنوان الخادم الخاص بك
-
-        //     // إرسال الطلب إلى الخادم باستخدام Fetch API
-        //     fetch(apiUrl, {
-        //         method: 'PUT',
-        //         headers: {
-        //             'Content-Type': 'application/json',
-        //         },
-        //         body: JSON.stringify(formData),
-        //     })
-        //         .then(response => response.json())
-        //         .then(data => {
-        //             console.log('تم تحديث البيانات بنجاح:', data);
-        //         })
-        //         .catch(error => {
-        //             console.error('حدث خطأ أثناء تحديث البيانات:', error);
-        //         });
-        // }
 
 
 
 
         document.addEventListener("DOMContentLoaded", function () {
 
-            fetch('http://127.0.0.1:8000/api/specialties')
-                .then(response => {
-                    if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    // Handle the data from the API
-                    console.log(data);
-
-                    // Select the dropdown element
-                    const selectElement = document.getElementById('service-type');
-
-                    // Iterate over the specialties array in the JSON data and create an option for each
-                    data.specialties.forEach(specialty => {
-                    const option = document.createElement('option');
-                    option.value = specialty.id;
-                    option.text = specialty.name;
-                    selectElement.appendChild(option);
-                    });
-                })
-                .catch(error => {
-                    console.error('There was a problem with the fetch operation:', error);
-                });
-            // 1. Retrieve artisan ID from localStorage
-            const artisanId = localStorage.getItem("artisan_id");
-
-            // 2. Fetch artisan data using the provided ID
-            fetch(`http://127.0.0.1:8000/api/artisans/${artisanId}`)
+            fetch(`http://127.0.0.1:8000/api/artisans/${localStorage.getItem("artisan_id")}`)
                 .then(response => response.json())
                 .then(data => {
                     console.log(data);
-                    // 3. Populate the form fields with the retrieved data
+
+                    // Populate the form fields with the retrieved data
                     document.getElementById("service-type").value = data.artisan.specialty_id;
                     document.getElementById("phone_number").value = data.artisan.phone_number;
                     document.getElementById("years_of_experience").value = data.artisan.years_of_experience;
@@ -230,18 +196,132 @@
                     document.getElementById("formal_education").value = data.artisan.formal_education;
                     document.getElementById("apprenticeships").value = data.artisan.apprenticeships;
                     document.getElementById("association_memberships").value = data.artisan.association_memberships;
-                    localStorage.setItem('specialty_id',data.artisan.specialty.id);
+
+                    // Display artisan cities in a div or any other suitable element
+                    const artisanCitiesDiv = document.getElementById("artisan-cities");
+                    data.artisan_cities.forEach(city => {
+                        // Create a div to hold the city name and delete button
+                        const cityContainer = document.createElement("div");
+                        cityContainer.classList.add("city-container");
+
+                        // Create a div for the city name
+                        const cityDiv = document.createElement("div");
+                        cityDiv.textContent = city.city.name;
+
+                        // Create a delete button for each city
+                        const deleteButton = document.createElement("button");
+                        deleteButton.textContent = "Delete";
+                        deleteButton.classList.add("delete-btn");
+                        deleteButton.type = "button";
+
+                        // Attach an event listener to the delete button
+                        deleteButton.addEventListener("click", function () {
+                            deleteCity(city.artisan_id, city.city_id); // Call the delete function
+                        });
+
+                        // Append the city name and delete button to the cityContainer div
+                        cityContainer.appendChild(cityDiv);
+                        cityContainer.appendChild(deleteButton);
+
+                        // Append the cityContainer div to the artisanCitiesDiv
+                        artisanCitiesDiv.appendChild(cityContainer);
+                    });
                 })
                 .catch(error => console.error("Error fetching artisan data:", error));
 
+            // Function to delete a city
+            function deleteCityFromUI(cityId) {
+                // إلغاء تحميل المدينة من واجهة المستخدم (اختياري)
+                const artisanCitiesDiv = document.getElementById("artisan-cities");
+                const cityContainer = document.querySelector(`.city-container[data-city-id="${cityId}"]`);
+                if (cityContainer) {
+                    artisanCitiesDiv.removeChild(cityContainer);
+
+                    // إظهار رسالة التنبيه بعد حذف المدينة
+                    alert("City deleted successfully!");
+
+                    
+                }
+            }
+
+            function deleteCity(artisanId, cityId) {
+                fetch(`http://127.0.0.1:8000/api/artisan-cities/${artisanId}/${cityId}`, {
+                    method: 'DELETE',
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('City deleted:', data);
+
+                        // استدعاء الوظيفة لحذف المدينة من واجهة المستخدم
+                        deleteCityFromUI(cityId);
+                        location.reload();
+                    })
+                    .catch(error => console.error('Error deleting city:', error));
+            }
 
 
+
+
+
+            fetch('http://127.0.0.1:8000/api/specialties')
+                .then(response => response.json())
+                .then(data => {
+                    const selectElement = document.getElementById('service-type');
+                    data.specialties.forEach(specialty => {
+                        const option = document.createElement('option');
+                        option.value = specialty.id;
+                        option.text = specialty.name;
+                        selectElement.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Error fetching specialties data:', error));
+
+            fetch('http://127.0.0.1:8000/api/cities')
+                .then(response => response.json())
+                .then(data => {
+                    const citySelect = document.getElementById('city-type');
+                    data.cities.forEach(city => {
+                        const option = document.createElement('option');
+                        option.value = city.id;
+                        option.text = city.name;
+                        citySelect.add(option);
+                    });
+                })
+                .catch(error => console.error('Error fetching cities data:', error));
+
+            // Fetch artisan data and populate the form fields...
         });
 
 
 
+        function addCity() {
+            var selectedCity = document.getElementById("city-type");
+            var selectedCityValue = selectedCity.options[selectedCity.selectedIndex].value;
+            attachCityToArtisan(selectedCityValue);
+        }
+
+        function attachCityToArtisan(city_id) {
+            const artisan_id = localStorage.getItem("artisan_id");
+
+            fetch(`http://127.0.0.1:8000/api/attach-city/${artisan_id}/${city_id}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('City attached to artisan:', data);
+                    console.log('City attached successfully to the artisan');
+                    alert("Added successfully");
+                    location.reload();
+                })
+                .catch(error => console.error('Error attaching city to artisan:', error));
+        }
+
+
+
         function submitForm() {
-            // Gather the values from the form
             const phoneNumber = document.getElementById('phone_number').value;
             const yearsOfExperience = document.getElementById('years_of_experience').value;
             const jerny = document.getElementById('jerny').value;
@@ -251,7 +331,6 @@
             const selectElement = document.getElementById('service-type');
             const specialtyID = selectElement.value;
 
-            // Build the JSON payload
             const payload = {
                 phone_number: phoneNumber,
                 years_of_experience: yearsOfExperience,
@@ -259,10 +338,9 @@
                 formal_education: formalEducation,
                 apprenticeships: apprenticeships,
                 association_memberships: associationMemberships,
-                specialty_id:specialtyID
+                specialty_id: specialtyID
             };
 
-            // Send the PUT request with JSON payload
             fetch(`http://127.0.0.1:8000/api/artisans/${localStorage.getItem("artisan_id")}`, {
                 method: "PUT",
                 headers: {
@@ -275,7 +353,6 @@
                 .then(response => response.json())
                 .then(data => {
                     console.log("Artisan updated successfully:", data);
-
                     // Optionally, you can redirect or show a success message here
                 })
                 .catch(error => console.error("Error updating artisan:", error));

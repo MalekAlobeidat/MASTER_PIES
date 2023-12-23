@@ -2,127 +2,214 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            text-align: center;
-        }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="workerSec.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@1,500&display=swap"
+        rel="stylesheet">
 
-        .testimonials-container {
-            width: 60%;
-            margin: auto;
-            overflow: hidden;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-        }
-
-        .testimonial {
-            display: none;
-            padding: 20px;
-            text-align: left;
-        }
-
-        .testimonial p {
-            margin: 0;
-            font-size: 18px;
-            line-height: 1.4;
-        }
-
-        .testimonial cite {
-            display: block;
-            margin-top: 15px;
-            font-style: italic;
-            color: #888;
-        }
-
-        #testimonial1 {
-            display: block;
-        }
-
-        .nav-buttons {
-            margin-top: 20px;
-        }
-
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            background-color: #e10000;
-            color: white;
-            border: none;
-            border-radius: 4px;
-        }
-
-        .arrow {
-            font-size: 24px;
-        }
-    </style>
-    <title>Testimonials Slider</title>
+    <title>Document</title>
 </head>
 
 <body>
-
-    <div class="testimonials-container">
-        <div class="testimonial" id="testimonial1">
-            <p>"Great service! Highly recommended."</p>
-            <cite>- John Doe</cite>
+    <nav class="navbar">
+        <div class="nav-left">
+            <a href="HomePage.html"><img src="../Img/Screenshot 2023-11-25 141054.png" alt="" /></a>
+            <div id="btn1" class="btn1">
+                <i id="btn-open" class="fa-solid fa-bars"></i>
+                <i id="btn-close" class="fa-solid fa-xmark"></i>
+            </div>
         </div>
-        <div class="testimonial" id="testimonial2">
-            <p>"Excellent team and quick response."</p>
-            <cite>- Jane Smith</cite>
+        <div class="nav-right">
+            <ul id="list">
+                <li><a href="../Home/HomePage.html">Home</a></li>
+                <li><a href="/Our-policy/Ourpolicy.html">Our policy</a></li>
+                <li><a href="/Services/Services.html">Services</a></li>
+                <li><a href="/admin2/admin/categorey/index.html" id="dashboardLink">Dashboard</a></li>
+                <li><a href="/admin2/" id="logoutLink" onclick="logout()">Logout</a></li>
+            </ul>
         </div>
-        <div class="testimonial" id="testimonial3">
-            <p>"Outstanding work. Will use them again!"</p>
-            <cite>- Bob Johnson</cite>
+    </nav>
+    <div class="workerContainer">
+
+        <div class="servicProvider">
+            <h1>Our Service Providers</h1>
         </div>
 
-        <div class="nav-buttons">
-            <button onclick="prevTestimonial()" class="arrow">&#9665;</button>
-            <button onclick="nextTestimonial()" class="arrow">&#9655;</button>
+        <div class="searchConitaner">
+            <form class="searchform cf" id="searchForm">
+                <button type="button" onclick="search()">Search</button>
+                <input type="text" placeholder="what are you looking for?" id="name-filter" />
+                <select id="cities">
+                    <option value="">Select City</option>
+                </select>
+                <select id="specialties">
+                    <option value="">Select Specialty</option>
+                </select>
+            </form>
         </div>
-    </div>
+        <div class="cards">
+            <div class="card">
+                <a href="#" id="cardLink">
+                    <div class="card__image-holder">
+                        <img class="card__image" src="" alt="" style="object-fit: cover;" />
+                    </div>
+                    <div class="card-title">
+                        <span class="left"></span>
+                        <span class="right"></span>
+                        <h2>
+                            Card title
+                            <small>allawi 7beb glbi</small>
+                        </h2>
+                        <h3>sd</h3>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div id="notFoundMessage" style="display: none; text-align: center; margin-top: 20px;">
+            <h3>No Match Found</h3>
+        </div>
 
-    <script>
-        let currentTestimonial = 1;
-        let autoSwitch;
-
-        function showTestimonial(index) {
-            document.getElementById(`testimonial${currentTestimonial}`).style.display = "none";
-            currentTestimonial = index;
-            document.getElementById(`testimonial${currentTestimonial}`).style.display = "block";
-        }
-
-        function prevTestimonial() {
-            showTestimonial((currentTestimonial - 1 + 3) % 3 || 3);
-            resetAutoSwitch();
-        }
-
-        function nextTestimonial() {
-            showTestimonial((currentTestimonial + 1) % 3 || 3);
-            resetAutoSwitch();
-        }
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                // Function to create a card element based on artisan data
+                function createCard(artisan) {
 
 
-        //كل 5 ثواني بتحرك
-        function switchTestimonialsAutomatically() {
-            autoSwitch = setInterval(() => {
-                nextTestimonial();
-            }, 5000);
-        }
+                    var card = document.createElement("div");
+                    card.classList.add("card");
 
-        function resetAutoSwitch() {
-            clearInterval(autoSwitch);
-            switchTestimonialsAutomatically();
-        }
+                    var imageHolder = document.createElement("div");
+                    imageHolder.classList.add("card__image-holder");
 
-        showTestimonial(currentTestimonial);
+                    var image = document.createElement("img");
+                    image.classList.add("card__image");
+                    image.src = artisan.image;
+                    image.alt = artisan.name;
 
-        switchTestimonialsAutomatically();
-    </script>
+                    imageHolder.appendChild(image);
 
+                    var cardTitle = document.createElement("div");
+                    cardTitle.classList.add("card-title");
+
+                    var h2 = document.createElement("h2");
+                    h2.textContent = artisan.name;
+
+                    var small = document.createElement("small");
+                    small.textContent = artisan.artisan && artisan.artisan.specialty ? artisan.artisan.specialty.name : "No Specialty";
+
+                    var toggleInfoLink = document.createElement("a");
+                    toggleInfoLink.href = `/ShowArtisan/Showartisan.html?id=${artisan.artisan.id}`;
+                    toggleInfoLink.classList.add("toggle-info", "btn");
+                    toggleInfoLink.textContent = "Show More"; // Set the text content
+                    toggleInfoLink.style.color = "#ffffff"; // Set text color
+                    toggleInfoLink.style.backgroundColor = "#007bff"; // Set background color
+                    toggleInfoLink.style.padding = "5px 10px"; // Set padding
+
+
+                    cardTitle.appendChild(toggleInfoLink);
+                    cardTitle.appendChild(h2);
+                    cardTitle.appendChild(small);
+
+                    card.appendChild(imageHolder);
+                    card.appendChild(cardTitle);
+
+                    return card;
+                }
+
+                // Function to display artisans based on filter
+                function displayArtisans(searchInput, cityId, specialtyId) {
+                    fetch("http://127.0.0.1:8000/api/filterAndsearch", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            SEARCHINPUT: searchInput,
+                            city_id: cityId,
+                            specialty_id: specialtyId,
+                        }),
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            var artisans = data.artisans;
+
+                            var cardsContainer = document.querySelector(".cards");
+                            cardsContainer.innerHTML = "";
+
+                            if (artisans.length === 0) {
+                                // Display "Not Found" message
+                                document.getElementById("notFoundMessage").style.display = "block";
+                            } else {
+                                // Hide "Not Found" message
+                                document.getElementById("notFoundMessage").style.display = "none";
+
+                                // Display artisans
+                                artisans.forEach(function (artisan) {
+                                    var card = createCard(artisan);
+                                    cardsContainer.appendChild(card);
+                                });
+                            }
+                        });
+                }
+
+                var nameFilter = document.getElementById("name-filter");
+
+                // Initial display of artisans
+                displayArtisans("", "", "");
+
+                // Event listener for name filter input
+                nameFilter.addEventListener("input", function () {
+                    var searchInput = this.value.toLowerCase();
+                    var cityId = document.getElementById('cities').value;
+                    var specialtyId = document.getElementById('specialties').value;
+                    displayArtisans(searchInput, cityId, specialtyId);
+                });
+
+
+                fetch('http://127.0.0.1:8000/api/getCitySpecialty')
+                    .then(response => response.json())
+                    .then(data => {
+                        const citiesDropdown = document.getElementById('cities');
+                        data.cities.forEach(city => {
+                            const option = document.createElement('option');
+                            option.value = city.id;
+                            option.text = city.name;
+                            citiesDropdown.add(option);
+                        });
+
+                        const specialtiesDropdown = document.getElementById('specialties');
+                        data.specialties.forEach(specialty => {
+                            const option = document.createElement('option');
+                            option.value = specialty.id;
+                            option.text = specialty.name;
+                            specialtiesDropdown.add(option);
+                        });
+                    })
+                    .catch(error => console.error('Error fetching data:', error));
+
+                function search() {
+                    let Searchinput = document.getElementById('name-filter').value;
+                    let cities = document.getElementById('cities').value;
+                    let specialties = document.getElementById('specialties').value;
+                    displayArtisans(Searchinput, cities, specialties);
+                }
+
+                function getParameterByName(name, url) {
+                    if (!url) url = window.location.href;
+                    name = name.replace(/[[]]/g, "\\$&");
+                    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                        results = regex.exec(url);
+                    if (!results) return null;
+                    if (!results[2]) return '';
+                    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+                }
+
+                var specialty_id = getParameterByName('id');
+            });
+        </script>
 </body>
 
 </html>

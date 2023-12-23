@@ -102,50 +102,19 @@ class AdminDashboardController extends Controller
         }
     }
 
-//     public function filterCity(Request $request)
-// {
-//     try {
-//         $query = Artisan::with(['user', 'specialty', 'services']);
 
-//         // Filter by city
-//         if ($request->has('city_id') && !empty($request->city_id)) {
-//             $query->whereHas('cities', function ($query) use ($request) {
-//                 $query->where('city_id', $request->input('city_id'));
-//             });
-//         }
 
-//         // Filter by specialty
-//         if ($request->has('specialty_id')  && !empty($request->specialty_id)) {
-//             $query->where('specialty_id', $request->input('specialty_id'));
-//         }
-
-//         $artisans = $query->get();
-
-//         return response()->json(['artisans' => $artisans], 200);
-//     } catch (\Exception $e) {
-//         return response()->json(['error' => 'Error fetching artisans'], 500);
-//     }
-// }
-
-// public function search(Request $request)
-// {
-//     $searchInput = $request->input('SEARCHINPUT');
-
-//     $result = User::with('artisan')
-//     ->where('role_id', '=', 2)
-//     ->where(function ($query) use ($searchInput) {
-//         $query->where('name', 'like', '%' . $searchInput . '%')
-//             ->orWhere('email', 'like', '%' . $searchInput . '%');
-//     })
-//     ->get();
-
-//     return response()->json(['artisans' => $result], 200);
-// }
-
-public function artisan_city($arisan_id,$city_id){
-    $artisan = Artisan::find($arisan_id);
+public function artisan_city($artisan_id, $city_id)
+{
+    $artisan = Artisan::find($artisan_id);
     $city = City::find($city_id);
+
+    if ($artisan->cities()->where('city_id', $city->id)->exists()) {
+        return response()->json(['message' => 'Record already exists'], 422);
+    }
+
     $artisan->cities()->attach($city->id);
+
     return response()->json(['artisans' => $artisan], 200);
 }
 public function filterAndsearch(Request $request)
@@ -199,6 +168,13 @@ public function artisanServices($id) {
         // Handle other exceptions
         return response()->json(['error' => $e->getMessage()], 500);
     }
+}
+
+public function getCitySpecialty(){
+    $cities = City::all();
+    $specialties = Specialty::all();
+    return response()->json(['cities' => $cities,
+                            'specialties'=> $specialties]);
 }
 
 }

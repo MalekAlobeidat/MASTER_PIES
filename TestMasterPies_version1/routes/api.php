@@ -95,3 +95,5 @@ Route::post('/filterAndsearch', [AdminDashboardController::class, 'filterAndsear
 // Attach city to artisan
 Route::post('/attach-city/{artisan_id}/{city_id}', [AdminDashboardController::class, 'artisan_city']);
 Route::get('/artisanSercices/{id}', [AdminDashboardController::class, 'artisanServices']);
+Route::get('/getCitySpecialty', [AdminDashboardController::class, 'getCitySpecialty']);
+Route::delete('artisan-cities/{artisanId}/{cityId}', [ArtisanCityController::class, 'destroy']);

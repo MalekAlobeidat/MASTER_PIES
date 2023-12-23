@@ -28,11 +28,12 @@ class ArtisanController extends Controller
     {
         try {
             $artisan = Artisan::with(['user', 'specialty', 'services'])->findOrFail($id);
-            $artisan_cities = Artisan_city::where('artisan_id', $id)->get();
-
+            $artisan_cities = Artisan_city::with('city')->where('artisan_id', $id)->get();
+            // $city = City::where($artisan_cities->)
             return response()->json([
                 'artisan' => $artisan,
                 'artisan_cities' => $artisan_cities
+
             ], 200);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Error fetching artisan details'], 500);

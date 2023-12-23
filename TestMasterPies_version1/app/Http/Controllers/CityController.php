@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\City;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
 class CityController extends Controller
@@ -22,15 +23,22 @@ class CityController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|unique:cities|max:255',
-        ]);
+        try {
+            $request->validate([
+                'name' => 'required|unique:cities|max:255',
+            ]);
 
-        $city = City::create($request->all());
+            $city = City::create($request->all());
 
-        return response()->json(['city' => $city], 201);
+            return response()->json(['city' => $city], 201);
+        } catch (QueryException $e) {
+            // Handle database-related exceptions (e.g., unique constraint violation)
+            return response()->json(['error' => 'Error creating city: ' . $e->getMessage()], 500);
+        } catch (\Exception $e) {
+            // Handle other general exceptions
+            return response()->json(['error' => 'Error creating city: ' . $e->getMessage()], 500);
+        }
     }
-
     /**
      * Display the specified resource.
      */
@@ -48,13 +56,13 @@ class CityController extends Controller
     public function update(Request $request, $id)
     {
         $city = City::findOrFail($id);
-    
+
         $request->validate([
             'name' => 'required|max:255',
         ]);
-    
+
         $city->update($request->all());
-    
+
         return response()->json(['city' => $city], 200);
     }
 

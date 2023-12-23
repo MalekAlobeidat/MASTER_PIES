@@ -60,10 +60,26 @@ class ArtisanCityController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy($artisanId, $cityId)
     {
-        $artisanCity = Artisan_city::findOrFail($id);
-        $artisanCity->delete();
-        return response()->json(['message' => 'ArtisanCity deleted successfully'], 200);
+        // Find the record based on artisan_id and city_id
+        $record = Artisan_city::where('artisan_id', $artisanId)
+            ->where('city_id', $cityId)
+            ->first();
+
+        // Check if a record exists
+        if ($record) {
+            try {
+                // Delete the record
+                $record->delete();
+                return response()->json(['message' => 'Record deleted successfully'], 200);
+            } catch (\Exception $e) {
+                // Handle the exception
+                return response()->json(['error' => $e->getMessage()], 500);
+            }
+        } else {
+            // Return a response indicating no matching record
+            return response()->json(['message' => 'No matching record found'], 404);
+        }
     }
 }

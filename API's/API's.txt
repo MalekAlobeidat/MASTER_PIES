@@ -340,8 +340,6 @@ JSON Format:
     * Endpoint: /api/artisan_subscriptions
     * Request Payload:
 {
-  "start_date": "2023-01-01",
-  "end_date": "2023-12-31",
   "subscription_id": 1,  // Replace with a valid subscription ID
   "artisan_id": 1        // Replace with a valid artisan ID
 }
@@ -353,8 +351,7 @@ JSON Format:
     * Method: PUT or PATCH
     * Endpoint: /api/artisan_subscriptions/{id} (Replace {id} with the artisan subscription ID)
 {
-  "start_date": "2023-02-01",
-  "end_date": "2023-12-31",
+
   "subscription_id": 2,  // Replace with a valid subscription ID
   "artisan_id": 1        // Replace with a valid artisan ID
 }
@@ -438,6 +435,10 @@ Index (GET):
 * Description: Retrieve a listing of certifications with their associated artisans.
 * Example Request:
 
+{
+    "name": "certifications",
+    "artisan_id": 1
+}
 
 
 

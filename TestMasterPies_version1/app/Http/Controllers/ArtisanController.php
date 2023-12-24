@@ -50,6 +50,7 @@ class ArtisanController extends Controller
         try {
             // Attempt to find the artisan by ID
             $artisan = Artisan::findOrFail($id);
+            
 
             // Validate the request data
             $request->validate([

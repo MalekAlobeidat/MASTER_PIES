@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Specialty extends Model
 {
+    protected $hidden = ['created_at', 'updated_at'];
+
     use HasFactory;
     protected $fillable = ['name'];
 

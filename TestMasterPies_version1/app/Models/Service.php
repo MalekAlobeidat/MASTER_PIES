@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Service extends Model
 {
     use HasFactory;
+    protected $hidden = ['created_at', 'updated_at'];
+
     protected $fillable = ['name', 'image', 'estimated_time', 'pricing', 'artisan_id'];
 
     public function artisan()

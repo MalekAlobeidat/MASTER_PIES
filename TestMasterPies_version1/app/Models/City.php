@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class City extends Model
 {
     use HasFactory;
+    protected $hidden = ['created_at', 'updated_at'];
+
     protected $fillable = ['name'];
 
     public function artisans()

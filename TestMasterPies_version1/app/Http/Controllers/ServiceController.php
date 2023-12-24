@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Artisan_subscription;
 use App\Models\Service;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -17,6 +18,7 @@ class ServiceController extends Controller
 
         return response()->json(['services' => $services], 200);
     }
+    // $service->makeHidden(['created_at', 'updated_at']);
 
     /**
      * Store a newly created resource in storage.
@@ -31,7 +33,18 @@ class ServiceController extends Controller
             'pricing' => 'nullable|numeric',
             'artisan_id' => 'required|exists:artisans,id',
         ]);
+        $Artisan_services = Service::where('artisan_id',$request->artisan_id)->count();
+        $Artisan_subsicription = Artisan_subscription::where('artisan_id',$request->artisan_id)->count();
 
+
+        if ($Artisan_subsicription == 0) {
+            if ($Artisan_services>=3) {
+                return response()->json(['message' => 'Please subsicripe to add more services'],200);
+            }
+        }
+        // dd($Artisan_subsicription);
+
+        // dd($Artisan_services);
         $service = new Service([
             'name' => $request->name,
             'estimated_time' => $request->estimated_time,
@@ -60,9 +73,24 @@ class ServiceController extends Controller
      */
     public function show($id)
     {
-        $service = Service::with('artisan')->findOrFail($id);
+        $service = Service::with('artisan.user')->findOrFail($id);
 
-        return response()->json(['service' => $service], 200);
+        // Retrieve other similar services based on the specialty_id of the associated artisan
+        $otherSimilarServices = Service::with('artisan')
+            ->whereHas('artisan', function ($query) use ($service) {
+                $query->where('specialty_id', $service->artisan->specialty_id);
+            })
+            
+            ->where('id', '<>', $service->id)
+            ->limit(5)
+            ->inRandomOrder()
+            ->get();
+    
+        // Return the response in JSON format
+        return response()->json([
+            'service' => $service,
+            'otherSimilarServices' => $otherSimilarServices
+        ], 200);
     }
 
 

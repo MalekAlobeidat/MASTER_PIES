@@ -16,7 +16,7 @@ class ArtisanSubscriptionController extends Controller
      */
     public function index()
     {
-        $artisanSubscriptions = Artisan_subscription::with(['subscription', 'artisan'])->get();
+        $artisanSubscriptions = Artisan_subscription::with(['subscription', 'artisan.user:id,name,image'])->get();
 
         return response()->json(['artisan_subscriptions' => $artisanSubscriptions], 200);
     }
@@ -82,7 +82,7 @@ class ArtisanSubscriptionController extends Controller
      */
     public function show($id)
     {
-        $artisanSubscription = Artisan_subscription::with(['subscription', 'artisan'])->findOrFail($id);
+        $artisanSubscription = Artisan_subscription::with(['subscription'])->where('artisan_id',$id)->get();
 
         return response()->json(['artisan_subscription' => $artisanSubscription], 200);
     }

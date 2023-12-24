@@ -1,9 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\Artisan_city;
 use App\Models\Artisan;
+use App\Models\Artisan_city;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\ValidationException;
 
 class ArtisanController extends Controller
 {
@@ -27,7 +30,7 @@ class ArtisanController extends Controller
     public function show($id)
     {
         try {
-            $artisan = Artisan::with(['user', 'specialty', 'services'])->findOrFail($id);
+            $artisan = Artisan::with(['user', 'specialty', 'services','certifications'])->findOrFail($id);
             $artisan_cities = Artisan_city::with('city')->where('artisan_id', $id)->get();
             // $city = City::where($artisan_cities->)
             return response()->json([
@@ -76,7 +79,7 @@ class ArtisanController extends Controller
 
         } catch (\Exception $e) {
             // Catch any other general exceptions
-            \Log::error('Error updating artisan: ' . $e->getMessage());
+            Log::error('Error updating artisan: ' . $e->getMessage());
 
             return response()->json(['error' => 'Error updating artisan'], 500);
         }

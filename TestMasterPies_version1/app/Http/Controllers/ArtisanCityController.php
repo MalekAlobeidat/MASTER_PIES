@@ -12,7 +12,7 @@ class ArtisanCityController extends Controller
      */
     public function index()
     {
-        $artisanCities = Artisan_city::with(['artisan', 'city'])->get();
+        $artisanCities = Artisan_city::with(['artisan.user', 'city'])->get();
 
         return response()->json(['artisanCities' => $artisanCities], 200);
     }

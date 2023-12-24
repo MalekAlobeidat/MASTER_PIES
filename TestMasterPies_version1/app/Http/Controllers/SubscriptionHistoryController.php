@@ -22,12 +22,12 @@ class SubscriptionHistoryController extends Controller
      */
     public function show($id)
     {
-        $subscriptionHistory = Subscription_history::with(['subscription', 'artisan'])
+       $subscriptionHistory = Subscription_history::with(['subscription'])->where('artisan_id',$id)
         ->where('artisan_id', '=', $id)
         ->get();
         return response()->json(['subscription_history' => $subscriptionHistory], 200);
     }
-
+    
     /**
      * Remove the specified resource from storage.
      */

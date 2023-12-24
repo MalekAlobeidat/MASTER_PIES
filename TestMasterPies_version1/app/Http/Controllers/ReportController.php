@@ -31,7 +31,7 @@ class ReportController extends Controller
                 'message' => 'required',
                 'user_id' => 'required|exists:users,id',
             ]);
-    
+
             $report = Report::create($request->all());
     
             return response()->json(['report' => $report], 201);
@@ -60,7 +60,6 @@ class ReportController extends Controller
         try {
             $report = Report::findOrFail($id);
             $report->delete();
-    
             return response()->json(['message' => 'Report deleted successfully'], 200);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             return response()->json(['error' => 'Report not found'], 404);

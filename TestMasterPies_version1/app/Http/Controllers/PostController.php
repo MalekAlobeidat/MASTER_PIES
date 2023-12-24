@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\Service;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -37,7 +38,7 @@ class PostController extends Controller
                 $path = $image->store('images', 'public');
                 $post->image = $path;
             }
-    
+   
             $post->save();
     
             return response()->json(['post' => $post], 201);
@@ -110,4 +111,10 @@ public function update(Request $request, $id)
         return response()->json(['message' => 'Post deleted successfully'], 200);
     }
 
+    public function getServisePosts($id)
+    {
+        $post = Service::with('services')->findOrFail($id);
+
+        return response()->json(['post' => $post], 200);
+    }
 }

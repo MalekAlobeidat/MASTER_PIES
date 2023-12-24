@@ -43,7 +43,7 @@ class AdminDashboardController extends Controller
 
                 'TotalCities' => DB::table('cities')->count(),
 
-
+                'TOTALREPORTS' => DB::table('reports')->count(),
 
                 // Add other statistics in a similar manner
             ];
@@ -55,29 +55,20 @@ class AdminDashboardController extends Controller
 
     }
 
-    private function getTotalReports()
+    
+    public function getSubscriptionHistory()
     {
         try {
-            return DB::table('reports')->count();
-        } catch (\Exception $e) {
-            throw $e;
-        }
-    }
-
-    private function getSubscriptionHistory()
-    {
-        try {
-            return DB::table('subscriptions')
-                ->select('subscriptions.name', DB::raw('COUNT(subscription_histories.artisan_id) AS artisan_count'))
+            return Subscription::select('subscriptions.id', 'subscriptions.name', DB::raw('COUNT(subscription_histories.artisan_id) AS artisan_count'))
                 ->leftJoin('subscription_histories', 'subscriptions.id', '=', 'subscription_histories.subscription_id')
-                ->groupBy('subscriptions.id')
+                ->groupBy('subscriptions.id', 'subscriptions.name') // Include 'subscriptions.name' in GROUP BY
                 ->get();
         } catch (\Exception $e) {
             throw $e;
         }
     }
 
-    private function getRecentReports()
+    public function getRecentReports()
     {
         try {
             return DB::table('reports')
@@ -89,20 +80,6 @@ class AdminDashboardController extends Controller
             throw $e;
         }
     }
-
-    private function getSubscriptionRevenue()
-    {
-        try {
-            return DB::table('subscription_histories')
-                ->join('subscriptions', 'subscription_histories.subscription_id', '=', 'subscriptions.id')
-                ->select(DB::raw('SUM(subscriptions.cost) AS total_revenue'))
-                ->first()->total_revenue;
-        } catch (\Exception $e) {
-            throw $e;
-        }
-    }
-
-
 
 public function artisan_city($artisan_id, $city_id)
 {

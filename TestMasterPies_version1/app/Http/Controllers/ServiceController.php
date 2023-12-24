@@ -18,7 +18,6 @@ class ServiceController extends Controller
         return response()->json(['services' => $services], 200);
     }
 
-
     /**
      * Store a newly created resource in storage.
      */

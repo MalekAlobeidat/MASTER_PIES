@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Artisan;
 use App\Models\Certification;
 use Illuminate\Http\Request;
 
@@ -62,6 +63,12 @@ class CertificationController extends Controller
         }
     }
 
+    public function show($id)
+    {
+        $certification = Artisan::with('certifications')->where('id',$id)->get();
+
+        return response()->json(['$certification' => $certification], 200);
+    }
     /**
      * Remove the specified resource from storage.
      */

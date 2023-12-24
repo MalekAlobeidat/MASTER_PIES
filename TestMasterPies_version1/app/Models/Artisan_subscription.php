@@ -14,7 +14,7 @@ class Artisan_subscription extends Model
     {
         return $this->belongsTo(Subscription::class);
     }
-
+    
     public function artisan()
     {
         return $this->belongsTo(Artisan::class);

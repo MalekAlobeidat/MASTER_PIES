@@ -80,7 +80,6 @@ class ServiceController extends Controller
             ->whereHas('artisan', function ($query) use ($service) {
                 $query->where('specialty_id', $service->artisan->specialty_id);
             })
-            
             ->where('id', '<>', $service->id)
             ->limit(5)
             ->inRandomOrder()

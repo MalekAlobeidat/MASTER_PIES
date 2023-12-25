@@ -20,14 +20,14 @@ class UserSeeder extends Seeder
             // Create 10 users with role ID 2
             
             DB::table('users')->insert([
-                [
-                    'name' => 'yousef',
-                    'email' => 'client@gmail.com',
-                    'password' => Hash::make('123123'),
-                    'role_id' => 3,
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ],
+                // [
+                //     'name' => 'yousef',
+                //     'email' => 'client@gmail.com',
+                //     'password' => Hash::make('123123'),
+                //     'role_id' => 3,
+                //     'created_at' => now(),
+                //     'updated_at' => now(),
+                // ],
                 [
                     'name' => 'mousa',
                     'email' => 'artisan@gmail.com',
@@ -45,6 +45,6 @@ class UserSeeder extends Seeder
                     'updated_at' => now(),
                 ],
             ]);
-            User::factory()->count(10)->create(['role_id' => 2]);
+            User::factory(24)->create();
         }
     }

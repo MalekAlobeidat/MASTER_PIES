@@ -20,13 +20,6 @@ class CitySeeder extends Seeder
             'Aqaba',
             'Madaba',
             'Jerash',
-            'Karak',
-            'Maan',
-            'Salt',
-            'Tafilah',
-            'Mafraq',
-            'Ajloun',
-            'Balqa',
             // Add more cities as needed
         ];
 

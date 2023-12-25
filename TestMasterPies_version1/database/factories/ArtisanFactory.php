@@ -16,6 +16,7 @@ class ArtisanFactory extends Factory
      */
     public function definition(): array
     {
+        $whatsappNumber = $this->faker->numerify('+1##########');
         return [
             'phone_number' => $this->faker->phoneNumber(),
             'years_of_experience' => $this->faker->numberBetween(0, 20),

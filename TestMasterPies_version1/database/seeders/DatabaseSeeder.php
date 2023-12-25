@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(RoleSeeder::class);
         $this->call(UserSeeder::class);
+        // \App\Models\User::factory(24)->create();
         $this->call(SubscriptionSeeder::class);
         $this->call(CitySeeder::class);
         $this->call(SpecialtySeeder::class);
@@ -27,7 +28,6 @@ class DatabaseSeeder extends Seeder
         $this->call(SubscriptionHistorySeeder::class);
 
         
-        // \App\Models\User::factory(10)->create();
 
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',

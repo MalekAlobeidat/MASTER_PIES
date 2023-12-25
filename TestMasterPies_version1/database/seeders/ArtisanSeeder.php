@@ -16,7 +16,7 @@ class ArtisanSeeder extends Seeder
     public function run(): void
     {
         // Adjust the number based on how many artisans you want to create
-        $numberOfArtisans = 10;
+        $numberOfArtisans = 25;
         $specialtyIds = Specialty::pluck('id');
 
         // Use the Artisan factory to create artisans with random data
